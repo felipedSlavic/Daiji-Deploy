@@ -660,12 +660,20 @@
         if (checkinEmAndamento || actionCard.classList.contains('done')) return
 
         const nivelEstresse = Number(answers.estresse)
+        // Converte somente o payload; mantém os rótulos e as respostas visuais.
+        const qualidadeSono = {
+            'Péssimo': 'RUIM', 'Regular': 'REGULAR', 'Bom': 'BOM', 'Ótimo': 'BOM'
+        }[answers.sono]
+        const qualidadeAlimentacao = {
+            'Segui bem minha dieta': 'BOA', 'Alguns excessos': 'REGULAR', 'Não me alimentei bem': 'RUIM'
+        }[answers.dieta]
         const respostaTexto = [
             answers.hora ? 'Horário de dormir: ' + answers.hora : null,
             answers.remedio ? 'Medicação: ' + answers.remedio : null
         ].filter(Boolean).join(' | ')
         const encoder = new TextEncoder()
         if (!required.every(key => answers[key]) ||
+            typeof qualidadeSono !== 'string' || typeof qualidadeAlimentacao !== 'string' ||
             !Number.isInteger(nivelEstresse) || nivelEstresse < 1 || nivelEstresse > 5 ||
             encoder.encode(answers.sono).length > 20 ||
             encoder.encode(answers.dieta).length > 30 ||
@@ -679,8 +687,8 @@
 
         const dados = {
             nivelEstresse,
-            qualidadeSono: answers.sono,
-            qualidadeAlimentacao: answers.dieta,
+            qualidadeSono,
+            qualidadeAlimentacao,
             humor: null,
             respostaTexto: respostaTexto || null
         }

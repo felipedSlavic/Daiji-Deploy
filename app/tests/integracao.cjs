@@ -12,6 +12,7 @@ const score = { idScore: 2, idBeneficiario: 7, valorScore: 85, classificacaoRisc
 let total = 0
 
 async function main() {
+    await require('./http-timeout.cjs')()
     for (const file of fs.readdirSync(path.join(root, 'app/js')).filter(f => f.endsWith('.js'))) {
         new vm.Script(fs.readFileSync(path.join(root, 'app/js', file), 'utf8'), { filename: file })
     }
@@ -53,6 +54,7 @@ async function main() {
                     const call = { path: new URL(req.url()).pathname, method: req.method(), body: req.postData() }
                     calls.push(call)
                     const reply = await handler(call)
+                    if (reply.pending) return // Simula uma resposta que não chega; nunca acessa a rede.
                     if (reply.abort) return route.abort()
                     return route.fulfill({ status: reply.status ?? 200, contentType: 'application/json', body: reply.raw ?? JSON.stringify(reply.data), headers: { 'Access-Control-Allow-Origin': origin } })
                 }
@@ -209,6 +211,66 @@ async function main() {
             main.scoreGets = (main.scoreGets || 0) + 1
             return main.scoreGets === 1 ? { status: 404 } : { data: score }
         }, true)
+        for (const etapa of ['checkins', 'recalcular', 'score']) {
+            let gets = 0
+            await scenario('Timeout em ' + etapa + ' sem retry e sem desfazer check-in 201', async (page, calls) => {
+                await page.clock.install()
+                await page.goto(origin + '/app/score.html')
+                await page.waitForFunction(() => document.querySelector('#scoreValue').textContent === '85')
+                await page.locator('#actionCard').click()
+                for (const group of ['sono', 'estresse', 'dieta', 'remedio']) {
+                    await page.locator(`[data-group="${group}"] [data-val]`).first().click()
+                }
+                const pendente = page.waitForRequest(req => req.url().endsWith('/' + etapa))
+                await page.locator('#ciSubmit').click()
+                await pendente
+                await page.clock.fastForward(30001)
+                if (etapa === 'checkins') {
+                    await page.waitForFunction(() => document.querySelector('.checkin-top p').textContent.includes('pode ter sido registrado'))
+                    assert.equal(calls.filter(c => c.method === 'POST').length, 1)
+                    assert.equal(await page.locator('#actionCard').evaluate(el => el.classList.contains('done')), false)
+                } else {
+                    await page.waitForFunction(() => document.querySelector('#ciSuccess p').textContent.includes('Check-in registrado, mas'))
+                    assert.equal(await page.locator('#actionCard').evaluate(el => el.classList.contains('done')), true)
+                    assert.equal(await page.locator('#scoreValue').textContent(), '85')
+                    await page.locator('#ciSubmit').evaluate(el => el.dispatchEvent(new Event('click')))
+                    assert.equal(calls.filter(c => c.path.endsWith('/checkins')).length, 1)
+                    assert.equal(calls.filter(c => c.path.endsWith('/recalcular')).length, 1)
+                }
+            }, call => {
+                if (call.method === 'GET' && ++gets === 1) return { data: score }
+                if (call.path.endsWith('/' + etapa)) return { pending: true }
+                return { status: 201, data: {} }
+            }, true)
+        }
+        const opcoesSono = { 'Péssimo': 'RUIM', 'Regular': 'REGULAR', 'Bom': 'BOM', 'Ótimo': 'BOM' }
+        const opcoesDieta = { 'Segui bem minha dieta': 'BOA', 'Alguns excessos': 'REGULAR', 'Não me alimentei bem': 'RUIM' }
+        // Respostas simuladas; os mesmos resultados são verificados no backend real com H2.
+        const resultados = { RUIM: [95, 95, 90], REGULAR: [100, 95, 95], BOM: [100, 100, 95] }
+        for (const [sonoVisual, sonoApi] of Object.entries(opcoesSono)) {
+            for (const [dietaVisual, dietaApi] of Object.entries(opcoesDieta)) {
+                const valorScore = resultados[sonoApi][Object.keys(opcoesDieta).indexOf(dietaVisual)]
+                await scenario('Payload canônico: ' + sonoVisual + ' / ' + dietaVisual, async (page, calls) => {
+                    await page.goto(origin + '/app/score.html')
+                    await page.waitForFunction(valor => document.querySelector('#scoreValue').textContent === String(valor), valorScore)
+                    for (const [group, options] of [['sono', opcoesSono], ['dieta', opcoesDieta]]) {
+                        assert.deepEqual(await page.locator(`[data-group="${group}"] [data-val]`).evaluateAll(els => els.map(el => el.dataset.val)), Object.keys(options))
+                    }
+                    await page.locator('#actionCard').click()
+                    for (const [group, value] of Object.entries({ sono: sonoVisual, estresse: '1', dieta: dietaVisual, remedio: 'Não tomei hoje' })) {
+                        await page.locator(`[data-group="${group}"] [data-val="${value}"]`).click()
+                    }
+                    await page.locator('#ciSubmit').click()
+                    await page.waitForFunction(() => document.querySelector('#ciSuccess p').textContent.includes('seu score foi atualizado'))
+                    assert.deepEqual(JSON.parse(calls.find(c => c.path.endsWith('/checkins')).body), {
+                        nivelEstresse: 1, qualidadeSono: sonoApi, qualidadeAlimentacao: dietaApi,
+                        humor: null, respostaTexto: 'Horário de dormir: 22:30 | Medicação: Não tomei hoje'
+                    })
+                    assert.equal(calls.filter(c => c.path.endsWith('/checkins')).length, 1)
+                    assert.equal(await page.locator('#scoreValue').textContent(), String(valorScore))
+                }, call => ({ status: call.method === 'POST' ? 201 : 200, data: { ...score, valorScore } }), true)
+            }
+        }
         console.log(`PASS: ${total} cenários de navegador + sintaxe e configuração. API inteiramente simulada.`)
     } finally {
         if (browser) await browser.close()

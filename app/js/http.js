@@ -1,5 +1,5 @@
 (function () {
-    const TIMEOUT_MS = 10000
+    const TIMEOUT_MS = 30000
 
     async function request(url, options = {}, lerCorpo = true) {
         const controller = new AbortController()

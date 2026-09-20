@@ -8,7 +8,7 @@ Base auditada: `a11361b` — Atualizacao do site, app e bot. Branch mantida: `in
 
 O frontend continua HTML/CSS/JavaScript estático, sem build, framework, pacote npm ou servidor Node necessário para usá-lo. Servir os arquivos por HTTP com o servidor estático de preferência. Ordem das dependências nas três páginas com REST: session.js → api-config.js → http.js → script da página. theme.js permanece na posição relativa anterior.
 
-`DaijiHttp.request` agora recebe caminhos `/api/...`; ele monta a URL exclusivamente por `DaijiApiConfig.url`. Mantém o timeout existente de 10 segundos e não repete POST automaticamente. A configuração CORS será feita no backend oficial por `CORS_ALLOWED_ORIGINS`, com a origem efetiva do frontend.
+`DaijiHttp.request` recebe caminhos `/api/...`; ele monta a URL exclusivamente por `DaijiApiConfig.url`. O timeout por requisição é de 30 segundos (ajustado na auditoria de 20/09/2026) e não repete POST automaticamente. A configuração CORS usa `CORS_ALLOWED_ORIGINS`, com a origem efetiva do frontend.
 
 ## Auditoria inicial e mapa de páginas
 
@@ -45,7 +45,7 @@ Armazenamento encontrado: daijiSession temporária/persistente e daijiPerfil em 
 ## Check-in e score
 
 - Check-in: `POST /api/beneficiarios/{idBeneficiario}/checkins`, campos nivelEstresse, qualidadeSono, qualidadeAlimentacao, humor e respostaTexto. O nível segue inteiro 1–5; humor permanece null no formulário existente. Não foram adicionados canal, IDs ao body ou outros campos.
-- O formulário mantém suas perguntas obrigatórias; isso é uma escolha da interface existente e não muda o fato de o backend aceitar campos opcionais/JSON vazio.
+- O formulário mantém suas perguntas obrigatórias; isso é uma escolha da interface existente e não muda o fato de o backend aceitar campos opcionais/JSON vazio. Na montagem do payload, todas as opções visuais de sono e alimentação são convertidas para BOM/BOA, REGULAR ou RUIM, reconhecidos pelo backend; os textos exibidos permanecem iguais. Humor continua null porque a tela não coleta essa informação.
 - Leitura: `GET /api/beneficiarios/{idBeneficiario}/score`; 404 mantém “Score ainda não calculado”.
 - Após check-in 201: `POST /api/beneficiarios/{idBeneficiario}/score/recalcular`, sem body; exige 201; depois GET do score atualizado. Falha do score não desfaz nem reenvia check-in confirmado.
 - O frontend mantém a validação de idBeneficiario, valorScore numérico, classificação e data ISO. Não calcula score nem altera sua regra. Usuário com idBeneficiario null permanece com identificação necessária, sem inventar ID ou consultar endpoint com null.
@@ -89,7 +89,7 @@ Nesta máquina, foi usado Node 24.19.0 do runtime Codex e NODE_PATH apontando pa
 
 1. BACKEND_URL já aponta para o backend oficial no Render. Depois de obter a URL pública da Vercel, adicionar essa origem em `CORS_ALLOWED_ORIGINS` no Render. O CORS do backend não foi alterado nesta preparação.
 2. Validar contra o backend oficial disponível, com conta autorizada, inclusive tempos de resposta e conexão real. Não foi iniciado o backend deste repositório nem criado registro no Oracle.
-3. Timeout de 10 segundos permanece o existente; teste de timeout por espera real e latência do backend publicado não foi realizado. As mensagens e ramificações foram revisadas estaticamente.
+3. Timeout ajustado para 30 segundos por requisição. Testes com relógio virtual cobrem o limite, resposta aos 15 segundos, leitura do corpo e falhas nas três etapas do check-in, preservando a confirmação após HTTP 201. A latência real do backend publicado não foi medida nesta auditoria. Ver `AUDITORIA-TIMEOUT-SCORE.md`.
 4. Não há tela de gestão ou medicação REST nem endpoint de recuperação de senha no contrato para integrar. Fluxos demonstrativos existentes foram preservados.
 5. O backend não retorna token: os controles locais de sessão não substituem autorização de dados no servidor.
 

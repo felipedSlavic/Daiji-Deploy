@@ -4,7 +4,7 @@ Base auditada: `a11361b` — Atualizacao do site, app e bot. Branch mantida: `in
 
 ## Configurar desenvolvimento e produção
 
-Editar somente `BACKEND_URL` em **`app/js/api-config.js`**. Deixar vazio usa `http://localhost:8080` para desenvolvimento. No deploy, preencher com a URL pública real do backend, sem `/api` no final. Nenhuma URL pública foi presumida.
+`BACKEND_URL` em **`app/js/api-config.js`** está configurado com o backend público oficial `https://daiji-deploy.onrender.com`, sem `/api` no final. Para desenvolvimento local, deixar esse valor vazio usa o fallback existente `http://localhost:8080`.
 
 O frontend continua HTML/CSS/JavaScript estático, sem build, framework, pacote npm ou servidor Node necessário para usá-lo. Servir os arquivos por HTTP com o servidor estático de preferência. Ordem das dependências nas três páginas com REST: session.js → api-config.js → http.js → script da página. theme.js permanece na posição relativa anterior.
 
@@ -87,7 +87,7 @@ Nesta máquina, foi usado Node 24.19.0 do runtime Codex e NODE_PATH apontando pa
 
 ## Pendências e limites
 
-1. Definir a URL pública real em BACKEND_URL e configurar a origem do frontend no CORS do backend oficial.
+1. BACKEND_URL já aponta para o backend oficial no Render. Depois de obter a URL pública da Vercel, adicionar essa origem em `CORS_ALLOWED_ORIGINS` no Render. O CORS do backend não foi alterado nesta preparação.
 2. Validar contra o backend oficial disponível, com conta autorizada, inclusive tempos de resposta e conexão real. Não foi iniciado o backend deste repositório nem criado registro no Oracle.
 3. Timeout de 10 segundos permanece o existente; teste de timeout por espera real e latência do backend publicado não foi realizado. As mensagens e ramificações foram revisadas estaticamente.
 4. Não há tela de gestão ou medicação REST nem endpoint de recuperação de senha no contrato para integrar. Fluxos demonstrativos existentes foram preservados.

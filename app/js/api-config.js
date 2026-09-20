@@ -1,7 +1,7 @@
 (function () {
     // ÚNICO ponto de configuração: preencher com a URL pública do backend no deploy.
     // Vazio mantém o backend de desenvolvimento. Não incluir /api no final.
-    const BACKEND_URL = ''
+    const BACKEND_URL = 'https://daiji-deploy.onrender.com'
     const baseUrl = (BACKEND_URL || 'http://localhost:8080').replace(/\/+$/, '')
 
     window.DaijiApiConfig = Object.freeze({

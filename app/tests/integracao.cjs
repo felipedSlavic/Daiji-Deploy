@@ -17,9 +17,13 @@ async function main() {
     }
     console.log('Sintaxe: todos os scripts app/js válidos')
     const config = fs.readFileSync(path.join(root, 'app/js/api-config.js'), 'utf8')
+    const configuredContext = { window: {} }
+    vm.runInNewContext(config, configuredContext)
+    const apiBase = configuredContext.window.DaijiApiConfig.baseUrl
+    assert.equal(apiBase, 'https://daiji-deploy.onrender.com')
     for (const base of ['', 'https://backend.example.test/']) {
         const context = { window: {} }
-        vm.runInNewContext(config.replace("const BACKEND_URL = ''", `const BACKEND_URL = '${base}'`), context)
+        vm.runInNewContext(config.replace(/const BACKEND_URL = '[^']*'/, `const BACKEND_URL = '${base}'`), context)
         assert.equal(context.window.DaijiApiConfig.url('/api/auth/login'),
             (base ? base.slice(0, -1) : 'http://localhost:8080') + '/api/auth/login')
         assert.throws(() => context.window.DaijiApiConfig.url('https://outro.example.test'))
@@ -45,7 +49,7 @@ async function main() {
             await page.route('**/*', async route => {
                 const req = route.request()
                 if (req.url().startsWith(origin + '/')) return route.continue()
-                if (req.url().startsWith('http://localhost:8080/api/')) {
+                if (req.url().startsWith(apiBase + '/api/')) {
                     const call = { path: new URL(req.url()).pathname, method: req.method(), body: req.postData() }
                     calls.push(call)
                     const reply = await handler(call)

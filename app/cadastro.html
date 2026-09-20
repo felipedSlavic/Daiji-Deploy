@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DAIJI | Crie sua conta</title>
+
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- Google Fonts -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="css/cadastro.css"
+    >
+
+    <!-- Identidade Daiji -->
+    <link rel="stylesheet" href="../assets/daiji-brand.css">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
+
+
+    <script src="js/session.js"></script>
+    <script src="js/api-config.js"></script>
+    <script src="js/http.js"></script>
+    <script src="js/theme.js"></script>
+
+
+    <link rel="stylesheet" href="css/theme-light.css">
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         FUNDO
+    ====================================================== -->
+
+    <div class="ambient">
+
+        <div class="glow-orb one"></div>
+
+        <div class="glow-orb two"></div>
+
+
+        <svg
+            viewBox="0 0 800 300"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <path
+                d="M0,180 C150,120 300,260 450,170 C600,90 700,200 800,140 L800,300 L0,300 Z"
+                fill="#0f2f22"
+            />
+
+            <path
+                d="M0,220 C180,160 320,280 480,200 C620,130 720,230 800,190 L800,300 L0,300 Z"
+                fill="#123a29"
+                opacity="0.8"
+            />
+
+        </svg>
+
+    </div>
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="device-frame">
+
+
+        <!-- LADO ESQUERDO -->
+
+        <section class="intro-col">
+
+
+            <span class="daiji-brand hero" aria-label="Daiji"><img class="daiji-mark" src="../assets/images/daiji-fox.png" alt="Logo Daiji"><span class="daiji-brand-name">DAIJI</span><span class="daiji-brand-dot"></span></span>
+
+
+            <h1 class="headline">
+
+                Crie sua conta<br>
+                e comece sua jornada
+
+            </h1>
+
+
+            <p class="subtext">
+
+                Cadastre seus dados para iniciar uma experiência
+                de cuidado personalizada para você.
+
+            </p>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             FORMULÁRIO
+        ====================================================== -->
+
+        <form
+            class="form-card"
+            id="cadastroForm"
+        >
+
+
+            <!-- =================================================
+                 SEUS DADOS
+            ================================================== -->
+
+            <div class="section-kicker">
+
+                Seus dados
+
+            </div>
+
+
+
+            <!-- EMPRESA -->
+
+            <div class="field-group">
+
+                <label class="field-label" for="empresa">Empresa</label>
+
+                <div class="field-wrap">
+
+                    <i class="bi bi-building field-icon" aria-hidden="true"></i>
+
+                    <select
+                        id="empresa"
+                        name="empresa"
+                        class="glass-input"
+                        required
+                        disabled
+                    >
+                        <option value="">Carregando empresas...</option>
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- NOME -->
+
+            <div class="field-group">
+
+                <label
+                    class="field-label"
+                    for="nome"
+                >
+
+                    Nome completo
+
+                </label>
+
+
+                <div class="field-wrap">
+
+                    <i
+                        class="bi bi-person field-icon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        class="glass-input"
+                        placeholder="Maria da Silva"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CPF -->
+
+            <div class="field-group">
+
+                <label
+                    class="field-label"
+                    for="cpf"
+                >
+
+                    CPF
+
+                </label>
+
+
+                <div class="field-wrap">
+
+                    <i
+                        class="bi bi-person-vcard field-icon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        type="text"
+                        id="cpf"
+                        name="cpf"
+                        class="glass-input"
+                        placeholder="000.000.000-00"
+                        maxlength="14"
+                        inputmode="numeric"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CELULAR -->
+
+            <div class="field-group">
+
+                <label
+                    class="field-label"
+                    for="celular"
+                >
+
+                    Celular
+
+                </label>
+
+
+                <div class="field-wrap">
+
+                    <i
+                        class="bi bi-telephone field-icon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        type="tel"
+                        id="celular"
+                        name="celular"
+                        class="glass-input"
+                        placeholder="(11) 95000-0000"
+                        autocomplete="tel"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="field-group">
+
+                <label
+                    class="field-label"
+                    for="email"
+                >
+
+                    E-mail
+
+                </label>
+
+
+                <div class="field-wrap">
+
+                    <i
+                        class="bi bi-envelope field-icon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="glass-input"
+                        placeholder="nome@email.com"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- DATA DE NASCIMENTO -->
+
+            <div class="field-group">
+
+                <label
+                    class="field-label"
+                    for="nascimento"
+                >
+
+                    Data de nascimento
+
+                </label>
+
+
+                <div class="field-wrap">
+
+                    <i
+                        class="bi bi-calendar3 field-icon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        type="date"
+                        id="nascimento"
+                        name="nascimento"
+                        class="glass-input"
+                        autocomplete="bday"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ACESSO
+            ================================================== -->
+
+            <div class="section-kicker">
+
+                Acesso
+
+            </div>
+
+
+
+            <!-- SENHA -->
+
+            <div class="field-group">
+
+                <label
+                    class="field-label"
+                    for="senha"
+                >
+
+                    Crie uma senha
+
+                </label>
+
+
+                <div class="field-wrap has-toggle">
+
+                    <i
+                        class="bi bi-lock field-icon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        type="password"
+                        id="senha"
+                        name="senha"
+                        class="glass-input"
+                        placeholder="Crie sua senha"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        data-toggle="senha"
+                        aria-label="Mostrar senha"
+                    >
+                        <i class="bi bi-eye" aria-hidden="true"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CONFIRMAR SENHA -->
+
+            <div class="field-group">
+
+                <label
+                    class="field-label"
+                    for="confirmarSenha"
+                >
+
+                    Confirme sua senha
+
+                </label>
+
+
+                <div class="field-wrap has-toggle">
+
+                    <i
+                        class="bi bi-shield-lock field-icon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        type="password"
+                        id="confirmarSenha"
+                        name="confirmarSenha"
+                        class="glass-input"
+                        placeholder="Digite novamente"
+                        autocomplete="new-password"
+                        minlength="8"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        data-toggle="confirmarSenha"
+                        aria-label="Mostrar senha"
+                    >
+                        <i class="bi bi-eye" aria-hidden="true"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CONTINUAR -->
+
+            <button
+                type="submit"
+                class="btn-start"
+            >
+
+                Continuar
+
+                <i class="bi bi-arrow-right"></i>
+
+            </button>
+
+
+
+            <div
+                id="cadastroMessage"
+                class="cadastro-message"
+                role="status"
+                aria-live="polite"
+            ></div>
+
+
+            <!-- LOGIN -->
+
+            <div class="login-row">
+
+                Já possui uma conta?
+
+                <a href="login.html">
+
+                    Entrar
+
+                </a>
+
+            </div>
+
+
+        </form>
+
+
+    </main>
+
+
+    <script src="js/cadastro.js"></script>
+
+
+</body>
+
+</html>

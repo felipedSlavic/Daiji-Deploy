@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DAIJI | Comunidade</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+   <link
+        rel="stylesheet"
+        href="css/comunidade.css"
+    >
+
+    <!-- Identidade Daiji -->
+    <link rel="stylesheet" href="../assets/daiji-brand.css">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
+
+
+    <script src="js/session.js" data-private></script>
+    <script src="js/theme.js"></script>
+
+
+    <link rel="stylesheet" href="css/theme-light.css">
+</head>
+
+
+<body class="has-daiji-tabbar">
+
+
+    <!-- =====================================================
+         FUNDO
+    ====================================================== -->
+
+    <div
+        class="ambient"
+        aria-hidden="true"
+    >
+
+        <div class="glow-orb one"></div>
+
+        <div class="glow-orb two"></div>
+
+
+        <svg
+            viewBox="0 0 1440 700"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <path
+                d="
+                    M0 510
+                    C220 430 380 590 610 500
+                    C850 405 1030 570 1440 430
+                    L1440 700
+                    L0 700
+                    Z
+                "
+                fill="rgba(53, 211, 153, 0.035)"
+            >
+            </path>
+
+
+            <path
+                d="
+                    M0 560
+                    C260 470 430 640 720 540
+                    C990 445 1190 600 1440 500
+                "
+                fill="none"
+                stroke="rgba(53, 211, 153, 0.10)"
+                stroke-width="1"
+            >
+            </path>
+
+        </svg>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="page">
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <header class="page-header">
+
+
+            <div class="header-left">
+
+
+                <!-- LOGO -->
+
+                <a class="daiji-brand compact" href="score.html" aria-label="Daiji"><img class="daiji-mark" src="../assets/logo.png" alt="Logo Daiji"><span class="daiji-brand-name">DAIJI</span><span class="daiji-brand-dot"></span></a>
+
+
+                <!-- TEXTO -->
+
+                <div class="header-copy">
+
+
+                    <div class="eyebrow">
+
+                        <i class="bi bi-people-fill"></i>
+
+                        comunidade
+
+                    </div>
+
+
+                    <h1>
+                        Cuidar fica melhor juntos
+                    </h1>
+
+
+                    <p>
+                        Compartilhe conquistas, acompanhe quem está
+                        perto de você e fortaleça hábitos de cuidado
+                        todos os dias.
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+            <!-- BOTÃO CONVIDAR -->
+
+            <button
+                class="invite-button"
+                id="inviteButton"
+                type="button"
+            >
+
+                <i class="bi bi-person-plus"></i>
+
+                <span>
+                    Convidar
+                </span>
+
+            </button>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             CÍRCULOS
+        ================================================== -->
+
+        <section class="circles-section">
+
+
+            <div class="section-heading">
+
+
+                <div>
+
+                    <span class="section-kicker">
+                        seus círculos
+                    </span>
+
+                    <h2>
+                        Quem cuida com você
+                    </h2>
+
+                </div>
+
+
+                <span class="section-hint">
+                    escolha um círculo
+                </span>
+
+
+            </div>
+
+
+
+            <div
+                class="circles"
+                id="circles"
+            >
+
+
+                <!-- FAMÍLIA -->
+
+                <button
+                    class="circle active"
+                    type="button"
+                    data-circle="familia"
+                    aria-pressed="true"
+                >
+
+                    <span class="circle-icon">
+
+                        <i class="bi bi-house-heart"></i>
+
+                    </span>
+
+
+                    <span class="circle-name">
+                        Família
+                    </span>
+
+
+                    <span class="circle-count">
+                        4
+                    </span>
+
+                </button>
+
+
+
+                <!-- AMIGOS -->
+
+                <button
+                    class="circle"
+                    type="button"
+                    data-circle="amigos"
+                    aria-pressed="false"
+                >
+
+                    <span class="circle-icon">
+
+                        <i class="bi bi-people"></i>
+
+                    </span>
+
+
+                    <span class="circle-name">
+                        Amigos
+                    </span>
+
+
+                    <span class="circle-count">
+                        6
+                    </span>
+
+                </button>
+
+
+
+                <!-- TRABALHO -->
+
+                <button
+                    class="circle"
+                    type="button"
+                    data-circle="trabalho"
+                    aria-pressed="false"
+                >
+
+                    <span class="circle-icon">
+
+                        <i class="bi bi-briefcase"></i>
+
+                    </span>
+
+
+                    <span class="circle-name">
+                        Trabalho
+                    </span>
+
+
+                    <span class="circle-count">
+                        3
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             GRID PRINCIPAL
+        ================================================== -->
+
+        <div class="community-grid">
+
+
+
+            <!-- =============================================
+                 COLUNA DE MEMBROS
+            ============================================== -->
+
+            <section class="community-column">
+
+
+                <div class="section-heading">
+
+
+                    <div>
+
+                        <span class="section-kicker">
+                            consistência
+                        </span>
+
+
+                        <h2 id="streakTitle">
+                            Streaks da família
+                        </h2>
+
+                    </div>
+
+
+                    <span class="section-hint">
+                        últimos 7 dias
+                    </span>
+
+
+                </div>
+
+
+
+                <div class="members">
+
+
+
+                    <!-- =====================================
+                         USUÁRIO
+                    ====================================== -->
+
+                    <article class="member-card me">
+
+
+                        <div class="avatar avatar-green">
+                            IS
+                        </div>
+
+
+                        <div class="member-info">
+
+
+                            <div class="member-name">
+
+                                <strong>
+                                    Israel
+                                </strong>
+
+                                <span class="you-tag">
+                                    você
+                                </span>
+
+                            </div>
+
+
+
+                            <div class="member-streak">
+
+                                <i class="bi bi-fire fire"></i>
+
+                                <strong>
+                                    7 dias
+                                </strong>
+
+                                <span>
+                                    de consistência
+                                </span>
+
+                            </div>
+
+
+
+                            <div
+                                class="streak-progress"
+                                aria-label="7 de 7 dias"
+                            >
+
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="member-actions">
+
+                            <span class="streak-badge">
+
+                                <i class="bi bi-fire"></i>
+
+                                7
+
+                            </span>
+
+                        </div>
+
+
+                    </article>
+
+
+
+                    <!-- =====================================
+                         ANA
+                    ====================================== -->
+
+                    <article class="member-card">
+
+
+                        <div class="avatar avatar-pink">
+                            AM
+                        </div>
+
+
+                        <div class="member-info">
+
+
+                            <div class="member-name">
+
+                                <strong>
+                                    Ana Martins
+                                </strong>
+
+                            </div>
+
+
+
+                            <div class="member-streak">
+
+                                <i class="bi bi-fire fire"></i>
+
+                                <strong>
+                                    6 dias
+                                </strong>
+
+                                <span>
+                                    de consistência
+                                </span>
+
+                            </div>
+
+
+
+                            <div
+                                class="streak-progress"
+                                aria-label="6 de 7 dias"
+                            >
+
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i></i>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="member-actions">
+
+                            <button
+                                class="message-button"
+                                type="button"
+                                aria-label="Enviar mensagem para Ana Martins"
+                            >
+
+                                <i class="bi bi-chat"></i>
+
+                            </button>
+
+                        </div>
+
+
+                    </article>
+
+
+
+                    <!-- =====================================
+                         CARLOS
+                    ====================================== -->
+
+                    <article class="member-card">
+
+
+                        <div class="avatar avatar-blue">
+                            CS
+                        </div>
+
+
+                        <div class="member-info">
+
+
+                            <div class="member-name">
+
+                                <strong>
+                                    Carlos Santos
+                                </strong>
+
+                            </div>
+
+
+
+                            <div class="member-streak">
+
+                                <i class="bi bi-fire fire"></i>
+
+                                <strong>
+                                    5 dias
+                                </strong>
+
+                                <span>
+                                    de consistência
+                                </span>
+
+                            </div>
+
+
+
+                            <div
+                                class="streak-progress"
+                                aria-label="5 de 7 dias"
+                            >
+
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i></i>
+                                <i></i>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="member-actions">
+
+                            <button
+                                class="message-button"
+                                type="button"
+                                aria-label="Enviar mensagem para Carlos Santos"
+                            >
+
+                                <i class="bi bi-chat"></i>
+
+                            </button>
+
+                        </div>
+
+
+                    </article>
+
+
+
+                    <!-- =====================================
+                         MARINA
+                    ====================================== -->
+
+                    <article class="member-card">
+
+
+                        <div class="avatar avatar-amber">
+                            MR
+                        </div>
+
+
+                        <div class="member-info">
+
+
+                            <div class="member-name">
+
+                                <strong>
+                                    Marina Rocha
+                                </strong>
+
+                            </div>
+
+
+
+                            <div class="member-streak">
+
+                                <i class="bi bi-flower1 sprout"></i>
+
+                                <strong>
+                                    3 dias
+                                </strong>
+
+                                <span>
+                                    começando uma sequência
+                                </span>
+
+                            </div>
+
+
+
+                            <div
+                                class="streak-progress"
+                                aria-label="3 de 7 dias"
+                            >
+
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i class="on"></i>
+                                <i></i>
+                                <i></i>
+                                <i></i>
+                                <i></i>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <div class="member-actions">
+
+                            <button
+                                class="message-button"
+                                type="button"
+                                aria-label="Enviar mensagem para Marina Rocha"
+                            >
+
+                                <i class="bi bi-chat"></i>
+
+                            </button>
+
+                        </div>
+
+
+                    </article>
+
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =============================================
+                 COLUNA LATERAL
+            ============================================== -->
+
+            <aside class="side-column">
+
+
+
+                <!-- =========================================
+                     INCENTIVO
+                ========================================== -->
+
+                <section>
+
+
+                    <div class="section-heading">
+
+
+                        <div>
+
+                            <span class="section-kicker">
+                                agora
+                            </span>
+
+                            <h2>
+                                Alguém precisa de você
+                            </h2>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <article class="community-highlight">
+
+
+                        <div class="highlight-icon">
+
+                            <i class="bi bi-heart"></i>
+
+                        </div>
+
+
+
+                        <div>
+
+
+                            <span class="section-kicker">
+                                incentivo do dia
+                            </span>
+
+
+                            <h3>
+                                Marina está perto de completar
+                                uma nova sequência
+                            </h3>
+
+
+                            <p>
+                                Um pequeno incentivo pode ajudar
+                                alguém a manter o cuidado em dia.
+                            </p>
+
+
+
+                            <button
+                                class="support-button"
+                                type="button"
+                            >
+
+                                <i class="bi bi-heart"></i>
+
+                                Incentivar
+
+                            </button>
+
+
+                        </div>
+
+
+                    </article>
+
+
+                </section>
+
+
+
+                <!-- =========================================
+                     RANKING
+                ========================================== -->
+
+                <section>
+
+
+                    <div class="section-heading">
+
+
+                        <div>
+
+                            <span class="section-kicker">
+                                essa semana
+                            </span>
+
+                            <h2>
+                                Mais consistentes
+                            </h2>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="ranking-card">
+
+
+
+                        <!-- PRIMEIRO -->
+
+                        <div class="ranking-row first me-row">
+
+
+                            <span class="position">
+                                1
+                            </span>
+
+
+                            <div class="mini-avatar avatar-green">
+                                IS
+                            </div>
+
+
+                            <span class="ranking-name">
+
+                                Israel
+
+                                <small>
+                                    você
+                                </small>
+
+                            </span>
+
+
+                            <span class="ranking-value">
+
+                                <i class="bi bi-fire"></i>
+
+                                7
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- SEGUNDO -->
+
+                        <div class="ranking-row">
+
+
+                            <span class="position">
+                                2
+                            </span>
+
+
+                            <div class="mini-avatar avatar-pink">
+                                AM
+                            </div>
+
+
+                            <span class="ranking-name">
+                                Ana Martins
+                            </span>
+
+
+                            <span class="ranking-value">
+
+                                <i class="bi bi-fire"></i>
+
+                                6
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- TERCEIRO -->
+
+                        <div class="ranking-row">
+
+
+                            <span class="position">
+                                3
+                            </span>
+
+
+                            <div class="mini-avatar avatar-blue">
+                                CS
+                            </div>
+
+
+                            <span class="ranking-name">
+                                Carlos Santos
+                            </span>
+
+
+                            <span class="ranking-value">
+
+                                <i class="bi bi-fire"></i>
+
+                                5
+
+                            </span>
+
+
+                        </div>
+
+
+
+                        <!-- QUARTO -->
+
+                        <div class="ranking-row">
+
+
+                            <span class="position">
+                                4
+                            </span>
+
+
+                            <div class="mini-avatar avatar-amber">
+                                MR
+                            </div>
+
+
+                            <span class="ranking-name">
+                                Marina Rocha
+                            </span>
+
+
+                            <span class="ranking-value">
+
+                                <i class="bi bi-flower1"></i>
+
+                                3
+
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </aside>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         NAVEGAÇÃO INFERIOR
+    ====================================================== -->
+
+    
+
+
+
+    <!-- =====================================================
+         TOAST
+    ====================================================== -->
+
+    <div
+        class="toast-message"
+        id="toast"
+        role="status"
+        aria-live="polite"
+    >
+
+        <i class="bi bi-check-circle"></i>
+
+        <span id="toastMessage">
+            Ação realizada
+        </span>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="js/comunidade.js"></script>
+
+
+    <!-- NAVEGAÇÃO DAIJI -->
+    <nav class="daiji-tabbar" aria-label="Navegação principal">
+        <div class="daiji-tabbar-inner">
+            <a href="score.html" class="daiji-tab" aria-label="Início"><i class="bi bi-house"></i><span>Início</span></a>
+            <a href="descobrir.html" class="daiji-tab" aria-label="Descobrir"><i class="bi bi-search"></i><span>Descobrir</span></a>
+            <a href="agendar.html" class="daiji-tab" aria-label="Agendar"><i class="bi bi-calendar3"></i><span>Agendar</span></a>
+            <a href="comunidade.html" class="daiji-tab active" aria-current="page" aria-label="Comunidade"><i class="bi bi-people"></i><span>Comunidade</span></a>
+            <a href="personalizacao.html" class="daiji-tab" aria-label="Perfil"><i class="bi bi-person"></i><span>Perfil</span></a>
+        </div>
+    </nav>
+
+</body>
+
+</html>

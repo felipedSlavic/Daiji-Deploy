@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DAIJI | Entrar</title>
+
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- Google Fonts -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="./css/login.css"
+    >
+
+    <!-- Identidade Daiji -->
+    <link rel="stylesheet" href="../assets/daiji-brand.css">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
+
+
+    <script src="js/session.js"></script>
+    <script src="js/api-config.js"></script>
+    <script src="js/http.js"></script>
+    <script src="js/theme.js"></script>
+
+
+    <link rel="stylesheet" href="css/theme-light.css">
+</head>
+
+
+<body>
+
+    <!-- efeitos decorativos -->
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+
+    <main class="login-page">
+
+        <!-- =========================
+             LADO ESQUERDO
+        ========================== -->
+
+        <section class="login-intro">
+
+            <a
+                href="./index.html"
+                class="brand"
+            >
+                <img class="daiji-mark" src="../assets/logo.png" alt="">
+                <span class="brand-name">DAIJI</span>
+
+                <span class="brand-dot"></span>
+            </a>
+
+
+            <div class="intro-content">
+
+                <span class="section-kicker">
+                    SUA SAÚDE, TODOS OS DIAS
+                </span>
+
+
+                <h1>
+                    Cuidar de você começa
+                    <span>antes do problema.</span>
+                </h1>
+
+
+                <p class="intro-description">
+                    Acompanhe sua saúde, entenda seus sinais
+                    e transforme informações em decisões de cuidado.
+                </p>
+
+
+                <div class="intro-features">
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-activity"></i>
+                        </div>
+
+                        <div>
+                            <strong>
+                                Acompanhe sua saúde
+                            </strong>
+
+                            <span>
+                                Visualize indicadores e tendências
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-heart-pulse"></i>
+                        </div>
+
+                        <div>
+                            <strong>
+                                Cuidado personalizado
+                            </strong>
+
+                            <span>
+                                Recomendações que fazem sentido para você
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+
+                        <div>
+                            <strong>
+                                Tudo em um só lugar
+                            </strong>
+
+                            <span>
+                                Score, agenda, cuidado e comunidade
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <p class="intro-footer">
+                Cuide de hoje. Entenda o amanhã.
+            </p>
+
+        </section>
+
+
+
+        <!-- =========================
+             LOGIN
+        ========================== -->
+
+        <section class="login-area">
+
+            <div class="login-card">
+
+                <div class="login-card-header">
+
+                    <div class="mobile-brand"><span class="daiji-brand hero" aria-label="Daiji"><img class="daiji-mark" src="../assets/logo.png" alt="Logo Daiji"><span class="daiji-brand-name">DAIJI</span><span class="daiji-brand-dot"></span></span></div>
+
+                    <span class="card-kicker">
+                        BEM-VINDO DE VOLTA
+                    </span>
+
+                    <h2>
+                        Entre na sua conta
+                    </h2>
+
+                    <p>
+                        Continue acompanhando sua jornada de cuidado.
+                    </p>
+
+                </div>
+
+
+                <form
+                    class="login-form"
+                    id="loginForm"
+                >
+
+                    <!-- E-MAIL -->
+
+                    <div class="field-group">
+
+                        <label
+                            for="email"
+                            class="field-label"
+                        >
+                            E-mail
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-envelope"></i>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="glass-input"
+                                placeholder="seuemail@exemplo.com"
+                                autocomplete="email"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SENHA -->
+
+                    <div class="field-group">
+
+                        <div class="field-header">
+
+                            <label
+                                for="senha"
+                                class="field-label"
+                            >
+                                Senha
+                            </label>
+
+                            <a
+                                href="./esqueceuSenha.html"
+                                class="forgot-password"
+                            >
+                                Esqueceu a senha?
+                            </a>
+
+                        </div>
+
+
+                        <div class="input-wrapper">
+
+                            <i class="bi bi-lock"></i>
+
+                            <input
+                                type="password"
+                                id="senha"
+                                name="senha"
+                                class="glass-input password-input"
+                                placeholder="Digite sua senha"
+                                autocomplete="current-password"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="toggle-password"
+                                id="togglePassword"
+                                aria-label="Mostrar senha"
+                            >
+                                <i
+                                    class="bi bi-eye"
+                                    id="passwordIcon"
+                                ></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- LEMBRAR -->
+
+                    <label class="remember-wrapper">
+
+                        <input
+                            type="checkbox"
+                            id="lembrar"
+                        >
+
+                        <span class="custom-checkbox">
+                            <i class="bi bi-check"></i>
+                        </span>
+
+                        <span>
+                            Manter-me conectado
+                        </span>
+
+                    </label>
+
+
+
+                    <!-- BOTÃO -->
+
+                    <button
+                        type="submit"
+                        class="btn-login"
+                    >
+
+                        <span>
+                            Entrar
+                        </span>
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </button>
+
+
+
+                    <!-- mensagem -->
+
+                    <div
+                        class="login-message"
+                        id="loginMessage"
+                    ></div>
+
+                </form>
+
+
+
+                <!-- divisor -->
+
+                <div class="login-divider">
+
+                    <span></span>
+
+                    <p>
+                        ou
+                    </p>
+
+                    <span></span>
+
+                </div>
+
+
+
+                <!-- cadastro -->
+
+                <div class="register-area">
+
+                    <p>
+                        Ainda não faz parte da Daiji?
+                    </p>
+
+                    <a
+                        href="./cadastro.html"
+                        class="btn-register"
+                    >
+                        Criar minha conta
+
+                        <i class="bi bi-arrow-up-right"></i>
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <p class="privacy-text">
+                Ao continuar, você concorda com nossos
+                <a href="#">Termos de Uso</a>
+                e
+                <a href="../site/seguranca.html">Política de Privacidade</a>.
+            </p>
+
+        </section>
+
+    </main>
+
+
+    <script src="./js/login.js"></script>
+
+</body>
+
+</html>

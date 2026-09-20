@@ -1,0 +1,283 @@
+/* =====================================================
+   NOTA: os estilos da MARCA e da TABBAR foram embutidos aqui
+   (antes ficavam em assets/daiji-brand.css) para garantir que
+   carreguem em todas as telas do app sem depender de colocar
+   aquele arquivo no lugar certo. Funcionam em tema claro e escuro.
+   ===================================================== */
+
+/* =====================================================
+   DAIJI — marca (logo + nome) e barra de navegação (tabbar)
+   Compartilhado por todas as telas do app (app/*.html).
+   Usa as variáveis de tema do app, então segue Claro/Escuro.
+===================================================== */
+
+/* ---------------- MARCA ---------------- */
+
+.daiji-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-main, #f4faf7);
+    text-decoration: none;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.daiji-mark {
+    display: block;
+    height: 34px;
+    aspect-ratio: 106 / 99;
+    width: auto;
+    object-fit: contain;
+    /* logo embutido (data URI): aparece mesmo se assets/logo.png faltar */
+    content: url("data:image/png;base64,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");
+}
+
+/* se o <img> quebrar (arquivo ausente), esconde o ícone/alt e mostra só o fundo */
+/* (o content:url acima já substitui o conteúdo do <img>, sem ícone quebrado) */
+
+.daiji-brand-name {
+    font-size: 18px;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+}
+
+.daiji-brand-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent, #35d399);
+    box-shadow: 0 0 12px var(--accent, #35d399);
+}
+
+/* variante compacta — cabeçalho das telas internas */
+.daiji-brand.compact .daiji-mark { height: 30px; }
+.daiji-brand.compact .daiji-brand-name { font-size: 15px; }
+
+/* variante hero — telas de intro / login / cadastro */
+.daiji-brand.hero { gap: 12px; }
+.daiji-brand.hero .daiji-mark { height: 72px; }
+.daiji-brand.hero .daiji-brand-name { font-size: 22px; letter-spacing: 0.18em; }
+
+
+/* ---------------- TABBAR (navegação inferior) ---------------- */
+
+.daiji-tabbar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+    z-index: 500 !important;
+    display: flex;
+    justify-content: center;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+    pointer-events: none;         /* só o "inner" recebe cliques */
+}
+
+.daiji-tabbar-inner {
+    pointer-events: auto;
+    display: flex;
+    gap: 4px;
+    padding: 8px 10px;
+    border-radius: 100px;
+    background: var(--card, rgba(12, 35, 25, 0.82));
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.10));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.34);
+}
+
+.daiji-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    min-width: 66px;
+    padding: 8px 12px;
+    border-radius: 100px;
+    color: var(--text-faint, #9fb8ac);
+    font-size: 11px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+.daiji-tab i { font-size: 18px; line-height: 1; }
+
+.daiji-tab span { line-height: 1; }
+
+.daiji-tab:hover { color: var(--text-main, #f4faf7); }
+
+.daiji-tab.active {
+    color: var(--accent, #35d399);
+    background: var(--accent-soft, rgba(53, 211, 153, 0.14));
+}
+
+/* impede que o conteúdo final fique atrás da tabbar */
+body.has-daiji-tabbar,
+body:has(.daiji-tabbar) { padding-bottom: 104px; }
+
+@media (max-width: 520px) {
+    .daiji-tabbar-inner { width: calc(100% - 24px); justify-content: space-between; }
+    .daiji-tab { min-width: 0; flex: 1; }
+}
+
+
+/* =====================================================
+   TEMA CLARO (overrides de variáveis)
+   ===================================================== */
+
+/* =====================================================
+   DAIJI — tema claro do app
+   Sobrescreve as variáveis do :root quando o <html> tem
+   data-theme="light" (definido por js/theme.js).
+   Como html[data-theme="light"] tem mais especificidade que
+   :root, estes valores vencem sem precisar de !important.
+   Carregar DEPOIS do CSS da página, no <head>.
+===================================================== */
+
+html[data-theme="light"] {
+
+    /* fundos */
+    --bg-deep: #e9f2ee;
+    --bg-mid: #f5faf7;
+
+    /* textos */
+    --text-main: #0d1a14;
+    --text-soft: #33473d;
+    --text-faint: #5f7268;
+
+    /* acento (um pouco mais escuro p/ contraste no claro) */
+    --accent: #12855d;
+    --accent-dark: #0d6b49;
+    --accent-soft: rgba(18, 133, 93, 0.12);
+    --accent-border: rgba(18, 133, 93, 0.32);
+
+    /* cartões / vidro */
+    --card: rgba(255, 255, 255, 0.88);
+    --card-glass: rgba(18, 133, 93, 0.06);
+    --card-border: rgba(10, 30, 20, 0.10);
+    --glass: rgba(10, 30, 20, 0.04);
+    --glass-hover: rgba(10, 30, 20, 0.06);
+    --glass-border: rgba(10, 30, 20, 0.12);
+
+    /* inputs */
+    --input-bg: rgba(10, 30, 20, 0.04);
+    --input-border: rgba(10, 30, 20, 0.14);
+
+    /* destaques */
+    --fire: #e0692f;
+    --gold: #c79418;
+    --yellow: #c79418;
+    --warning: #b9832b;
+
+    /* faz os controles nativos (scrollbar, date picker) seguirem o tema */
+    color-scheme: light;
+}
+
+/* rede de segurança: garante fundo/texto coerentes no claro,
+   mesmo em telas cujo gradiente do body use cores fixas */
+html[data-theme="light"] body {
+    background: var(--bg-mid);
+    color: var(--text-main);
+}
+
+/* ---------- ajustes de contraste no tema claro (telas de intro) ---------- */
+html[data-theme="light"] .headline { color: var(--text-main); }
+html[data-theme="light"] .subtext { color: var(--text-soft); }
+/* o "ambiente" (ondas/orbs) é escuro e fixo no HTML — suaviza no claro */
+html[data-theme="light"] .ambient { opacity: 0.30; }
+
+/* ---------- inputs/textos claros fixos → legíveis no tema claro ---------- */
+html[data-theme="light"] .glass-input {
+    color: var(--text-main);
+    -webkit-text-fill-color: var(--text-main);
+}
+html[data-theme="light"] .glass-input::placeholder { color: var(--text-faint); }
+html[data-theme="light"] .field-label { color: var(--text-soft); }
+
+/* ---------- textos/logo que somem no tema claro ---------- */
+/* títulos e busca com cor branca fixa → escuros no claro */
+html[data-theme="light"] .page-title,
+html[data-theme="light"] .brand-word,
+html[data-theme="light"] .doctor-info h5 { color: var(--text-main) !important; }
+html[data-theme="light"] .search-input { color: var(--text-main) !important; }
+html[data-theme="light"] .search-input::placeholder { color: var(--text-faint) !important; }
+
+/* a raposa é um desenho de linha BRANCO → invisível no fundo claro.
+   O filtro a torna escura (mantendo o traço) só no tema claro. */
+html[data-theme="light"] .daiji-mark { filter: brightness(0); }
+
+/* ---------- app/index.html: títulos das features e botões de conta ---------- */
+/* títulos das features ("Acompanhe sua rotina" etc.) são brancos fixos → escuros no claro */
+html[data-theme="light"] .feature-text h3 { color: var(--text-main) !important; }
+
+/* "Já tem uma conta? / Entrar / Conhecer a Daiji" — vira rótulo + 2 botões
+   (base, vale nos dois temas — usa as variáveis do app) */
+.alt-action {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 1.1rem;
+}
+/* rótulo ocupa a linha toda; os dois botões ficam lado a lado embaixo */
+.alt-action-label {
+    flex-basis: 100%;
+    color: var(--text-faint);
+    font-size: 0.92rem;
+    margin-bottom: 2px;
+}
+.alt-action .alt-btn {
+    flex: 1;
+    min-width: 140px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+.alt-action .alt-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+/* botão primário (Entrar) com destaque */
+.alt-action .alt-btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #04140c;
+}
+.alt-action .alt-btn-primary:hover {
+    filter: brightness(1.05);
+    color: #04140c;
+}
+
+/* botão "Começar" (.btn-start) é fantasma branco → some no claro; vira CTA sólido */
+html[data-theme="light"] .btn-start {
+    background: var(--accent) !important;
+    color: #04140c !important;
+    border-color: var(--accent) !important;
+}
+
+/* ---------- login: box escuro fixo → claro no tema claro ---------- */
+html[data-theme="light"] .login-card {
+    background: var(--card) !important;
+}
+html[data-theme="light"] .login-card::before { opacity: 0.35; }
+
+/* ---------- descobrir: títulos de seção brancos fixos (ex.: "Categorias") ---------- */
+html[data-theme="light"] .section-title { color: var(--text-main) !important; }
+
+/* ---------- comunidade: toast "Incentivar" tem fundo escuro fixo;
+     no claro o texto ficava escuro (ilegível). Mantém o toast escuro e clareia o texto. */
+html[data-theme="light"] .toast-message { color: #f4faf7 !important; }

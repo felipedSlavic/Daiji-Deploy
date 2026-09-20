@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DAIJI | Agendar consulta</title>
+
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- Google Fonts -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="css/agendar.css"
+    >
+
+    <!-- Identidade Daiji -->
+    <link rel="stylesheet" href="../assets/daiji-brand.css">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
+
+
+    <script src="js/session.js" data-private></script>
+    <script src="js/theme.js"></script>
+
+
+    <link rel="stylesheet" href="css/theme-light.css">
+</head>
+
+
+<body class="has-daiji-tabbar">
+
+
+    <!-- =====================================================
+         FUNDO
+    ====================================================== -->
+
+    <div class="ambient">
+
+        <div class="glow-orb one"></div>
+
+        <div class="glow-orb two"></div>
+
+
+        <svg
+            viewBox="0 0 800 300"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <path
+                d="M0,180 C150,120 300,260 450,170 C600,90 700,200 800,140 L800,300 L0,300 Z"
+                fill="#0f2f22"
+            />
+
+            <path
+                d="M0,220 C180,160 320,280 480,200 C620,130 720,230 800,190 L800,300 L0,300 Z"
+                fill="#123a29"
+                opacity="0.75"
+            />
+
+        </svg>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         PÁGINA
+    ====================================================== -->
+
+    <main class="page">
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <header class="topbar">
+
+
+            <button
+                type="button"
+                class="icon-btn"
+                aria-label="Voltar"
+                onclick="history.back()"
+            >
+
+                <i class="bi bi-arrow-left"></i>
+
+            </button>
+
+
+
+            <div class="topbar-title">
+
+
+                <a class="daiji-brand compact" href="score.html" aria-label="Daiji"><img class="daiji-mark" src="../assets/logo.png" alt="Logo Daiji"><span class="daiji-brand-name">DAIJI</span><span class="daiji-brand-dot"></span></a>
+
+
+                <div>
+
+                    <span class="eyebrow">
+                        Psicologia
+                    </span>
+
+                    <h1>
+                        Agendar consulta
+                    </h1>
+
+                </div>
+
+
+            </div>
+
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             PROFISSIONAL
+        ================================================== -->
+
+        <section class="doctor-card">
+
+
+            <div class="doctor-avatar">
+
+                <i class="bi bi-person-fill"></i>
+
+            </div>
+
+
+            <div class="doctor-info">
+
+
+                <div class="doctor-heading">
+
+                    <div>
+
+                        <h2>
+                            Dra. Juliana Martins
+                        </h2>
+
+                        <p>
+                            Psicóloga Clínica · CRP 06/123456
+                        </p>
+
+                    </div>
+
+
+                    <span class="verified">
+
+                        <i class="bi bi-patch-check-fill"></i>
+
+                        Verificado
+
+                    </span>
+
+                </div>
+
+
+
+                <div class="doctor-meta">
+
+
+                    <span>
+
+                        <i class="bi bi-star-fill star"></i>
+
+                        <strong>4.9</strong>
+
+                        128 avaliações
+
+                    </span>
+
+
+                    <span>
+
+                        <i class="bi bi-clock"></i>
+
+                        50 min
+
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONTEÚDO
+        ================================================== -->
+
+        <div class="appointment-grid">
+
+
+            <!-- =================================================
+                 COLUNA PRINCIPAL
+            ================================================== -->
+
+            <div class="main-column">
+
+
+                <!-- DIA -->
+
+                <section class="glass-card">
+
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                Data
+                            </span>
+
+                            <h3>
+                                Escolha o dia
+                            </h3>
+
+                        </div>
+
+
+                        <span
+                            class="section-hint"
+                            id="monthLbl"
+                        >
+
+                            Setembro
+
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="dates"
+                        id="dates"
+                    ></div>
+
+
+                </section>
+
+
+
+                <!-- HORÁRIO -->
+
+                <section class="glass-card">
+
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                Horário
+                            </span>
+
+                            <h3>
+                                Horários disponíveis
+                            </h3>
+
+                        </div>
+
+
+                        <span
+                            class="section-hint"
+                            id="tzLbl"
+                        >
+
+                            Horário de Brasília
+
+                        </span>
+
+                    </div>
+
+
+
+                    <div
+                        class="periods"
+                        id="periods"
+                    >
+
+
+                        <button
+                            type="button"
+                            class="period"
+                            aria-pressed="true"
+                            data-period="manha"
+                        >
+
+                            <i class="bi bi-sunrise"></i>
+
+                            Manhã
+
+                            <span
+                                class="n"
+                                data-count="manha"
+                            ></span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="period"
+                            aria-pressed="false"
+                            data-period="tarde"
+                        >
+
+                            <i class="bi bi-sun"></i>
+
+                            Tarde
+
+                            <span
+                                class="n"
+                                data-count="tarde"
+                            ></span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="period"
+                            aria-pressed="false"
+                            data-period="noite"
+                        >
+
+                            <i class="bi bi-moon-stars"></i>
+
+                            Noite
+
+                            <span
+                                class="n"
+                                data-count="noite"
+                            ></span>
+
+                        </button>
+
+
+                    </div>
+
+
+                    <div
+                        class="slots"
+                        id="slots"
+                    ></div>
+
+
+                </section>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 COLUNA LATERAL
+            ================================================== -->
+
+            <aside class="side-column">
+
+
+                <!-- TIPO -->
+
+                <section class="glass-card">
+
+
+                    <div class="section-header">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                Formato
+                            </span>
+
+                            <h3>
+                                Tipo de consulta
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div
+                        class="types"
+                        id="types"
+                    >
+
+
+                        <button
+                            type="button"
+                            class="type"
+                            aria-pressed="true"
+                            data-type="Vídeo"
+                            data-price="180"
+                        >
+
+                            <span class="type-icon">
+
+                                <i class="bi bi-camera-video"></i>
+
+                            </span>
+
+
+                            <span class="type-copy">
+
+                                <strong>
+                                    Por vídeo
+                                </strong>
+
+                                <small>
+                                    Sessão online · 50 min
+                                </small>
+
+                            </span>
+
+
+                            <i class="bi bi-check-circle-fill type-check"></i>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="type"
+                            aria-pressed="false"
+                            data-type="Presencial"
+                            data-price="220"
+                        >
+
+                            <span class="type-icon">
+
+                                <i class="bi bi-geo-alt"></i>
+
+                            </span>
+
+
+                            <span class="type-copy">
+
+                                <strong>
+                                    Presencial
+                                </strong>
+
+                                <small>
+                                    Consultório · 50 min
+                                </small>
+
+                            </span>
+
+
+                            <i class="bi bi-check-circle-fill type-check"></i>
+
+                        </button>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- RESUMO -->
+
+                <section class="summary-card">
+
+
+                    <div class="summary-title">
+
+                        <span>
+
+                            Resumo do agendamento
+
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="summary-row">
+
+
+                        <span class="summary-icon">
+
+                            <i class="bi bi-calendar3"></i>
+
+                        </span>
+
+
+                        <div class="summary-copy">
+
+                            <small>
+                                Data e horário
+                            </small>
+
+                            <strong id="sumWhen">
+                                —
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="summary-row">
+
+
+                        <span class="summary-icon">
+
+                            <i class="bi bi-camera-video"></i>
+
+                        </span>
+
+
+                        <div class="summary-copy">
+
+                            <small>
+                                Formato
+                            </small>
+
+                            <strong id="sumType">
+                                Por vídeo
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="summary-row">
+
+
+                        <span class="summary-icon">
+
+                            <i class="bi bi-clock"></i>
+
+                        </span>
+
+
+                        <div class="summary-copy">
+
+                            <small>
+                                Duração
+                            </small>
+
+                            <strong>
+                                50 minutos
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- CONFIRMAR -->
+
+                    <button
+                        type="button"
+                        class="cta"
+                        id="cta"
+                        disabled
+                    >
+
+                        Confirmar agendamento
+
+                        <i class="bi bi-arrow-right"></i>
+
+                    </button>
+
+
+                </section>
+
+
+            </aside>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         CONFIRMAÇÃO
+    ====================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="modal"
+        hidden
+    >
+
+
+        <div class="confirmation-modal">
+
+
+            <div class="success-icon">
+
+                <i class="bi bi-check-lg"></i>
+
+            </div>
+
+
+            <span class="confirmation-kicker">
+                Tudo certo
+            </span>
+
+
+            <h3>
+                Consulta confirmada!
+            </h3>
+
+
+            <p>
+
+                Você receberá um lembrete e o link de acesso
+                pelo aplicativo e por e-mail.
+
+            </p>
+
+
+
+            <div class="recap">
+
+
+                <div class="recap-row">
+
+                    <span>
+                        Profissional
+                    </span>
+
+                    <strong>
+                        Dra. Juliana Martins
+                    </strong>
+
+                </div>
+
+
+
+                <div class="recap-row">
+
+                    <span>
+                        Quando
+                    </span>
+
+                    <strong id="recapWhen">
+                        —
+                    </strong>
+
+                </div>
+
+
+
+                <div class="recap-row">
+
+                    <span>
+                        Formato
+                    </span>
+
+                    <strong id="recapType">
+                        —
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <button
+                type="button"
+                class="modal-primary"
+                id="done"
+            >
+
+                <i class="bi bi-calendar-check"></i>
+
+                Adicionar à agenda
+
+            </button>
+
+
+
+            <button
+                type="button"
+                class="modal-secondary"
+                id="close"
+            >
+
+                Fechar
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <script src="js/agendar.js"></script>
+
+
+    <!-- NAVEGAÇÃO DAIJI -->
+    <nav class="daiji-tabbar" aria-label="Navegação principal">
+        <div class="daiji-tabbar-inner">
+            <a href="score.html" class="daiji-tab" aria-label="Início"><i class="bi bi-house"></i><span>Início</span></a>
+            <a href="descobrir.html" class="daiji-tab" aria-label="Descobrir"><i class="bi bi-search"></i><span>Descobrir</span></a>
+            <a href="agendar.html" class="daiji-tab active" aria-current="page" aria-label="Agendar"><i class="bi bi-calendar3"></i><span>Agendar</span></a>
+            <a href="comunidade.html" class="daiji-tab" aria-label="Comunidade"><i class="bi bi-people"></i><span>Comunidade</span></a>
+            <a href="personalizacao.html" class="daiji-tab" aria-label="Perfil"><i class="bi bi-person"></i><span>Perfil</span></a>
+        </div>
+    </nav>
+
+</body>
+
+</html>

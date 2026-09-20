@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DAIJI | Vamos personalizar seu cuidado</title>
+
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- Google Fonts -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="css/personalizacao.css"
+    >
+
+    <!-- Identidade Daiji -->
+    <link rel="stylesheet" href="../assets/daiji-brand.css">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
+
+
+    <script src="js/session.js" data-private></script>
+    <script src="js/theme.js"></script>
+
+
+    <link rel="stylesheet" href="css/theme-light.css">
+</head>
+
+
+<body class="has-daiji-tabbar">
+
+
+    <!-- =====================================================
+         FUNDO
+    ====================================================== -->
+
+    <div class="ambient">
+
+        <div class="glow-orb one"></div>
+
+        <div class="glow-orb two"></div>
+
+
+        <svg
+            viewBox="0 0 800 300"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <path
+                d="M0,180 C150,120 300,260 450,170 C600,90 700,200 800,140 L800,300 L0,300 Z"
+                fill="#0f2f22"
+            />
+
+            <path
+                d="M0,220 C180,160 320,280 480,200 C620,130 720,230 800,190 L800,300 L0,300 Z"
+                fill="#123a29"
+                opacity="0.8"
+            />
+
+        </svg>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="device-frame">
+
+
+        <!-- INTRODUÇÃO -->
+
+        <section class="intro-col">
+
+            <span class="daiji-brand hero" aria-label="Daiji"><img class="daiji-mark" src="../assets/logo.png" alt="Logo Daiji"><span class="daiji-brand-name">DAIJI</span><span class="daiji-brand-dot"></span></span>
+
+
+
+            <h1 class="headline">
+
+                Vamos personalizar<br>
+                seu cuidado
+
+            </h1>
+
+
+            <p class="subtext">
+
+                Agora queremos conhecer um pouco mais
+                sobre sua saúde e sua rotina.
+
+            </p>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             FORMULÁRIO
+        ====================================================== -->
+
+        <form
+            class="form-card"
+            id="personalizacaoForm"
+        >
+
+
+            <!-- =================================================
+                 APARÊNCIA
+            ================================================== -->
+
+            <div class="section-kicker">
+
+                Aparência
+
+            </div>
+
+
+            <div class="field-group">
+
+                <label class="field-label" id="tema-label">
+
+                    Como você prefere ver o app?
+
+                </label>
+
+
+                <div
+                    class="theme-choice-group"
+                    role="radiogroup"
+                    aria-labelledby="tema-label"
+                >
+
+                    <!-- ESCURO -->
+                    <button
+                        type="button"
+                        class="theme-choice"
+                        data-theme-set="dark"
+                        aria-pressed="true"
+                    >
+
+                        <span class="theme-preview theme-preview--dark">
+                            <span class="tp-bar"></span>
+                            <span class="tp-line"></span>
+                            <span class="tp-line short"></span>
+                        </span>
+
+                        <span class="theme-choice-label">
+                            <i class="bi bi-moon-stars"></i>
+                            Escuro
+                        </span>
+
+                        <i class="bi bi-check-circle-fill theme-choice-check"></i>
+
+                    </button>
+
+
+                    <!-- CLARO / TELA BRANCA -->
+                    <button
+                        type="button"
+                        class="theme-choice"
+                        data-theme-set="light"
+                        aria-pressed="false"
+                    >
+
+                        <span class="theme-preview theme-preview--light">
+                            <span class="tp-bar"></span>
+                            <span class="tp-line"></span>
+                            <span class="tp-line short"></span>
+                        </span>
+
+                        <span class="theme-choice-label">
+                            <i class="bi bi-sun"></i>
+                            Claro
+                        </span>
+
+                        <i class="bi bi-check-circle-fill theme-choice-check"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SAÚDE
+            ================================================== -->
+
+            <div class="section-kicker">
+
+                Saúde
+
+            </div>
+
+
+
+            <!-- DOENÇAS -->
+
+            <div class="field-group">
+
+                <label
+                    class="field-label"
+                    for="doencas"
+                >
+
+                    Possui alguma doença pré-existente?
+
+                </label>
+
+
+                <div class="field-wrap">
+
+                    <i
+                        class="bi bi-heart-pulse field-icon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        type="text"
+                        id="doencas"
+                        name="doencas"
+                        class="glass-input"
+                        placeholder="Ex: Diabetes, hipertensão (opcional)"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MEDICAÇÃO -->
+
+            <div class="field-group">
+
+                <label
+                    class="field-label"
+                    for="medicacao"
+                >
+
+                    Faz uso de alguma medicação?
+
+                </label>
+
+
+                <div class="field-wrap">
+
+                    <i
+                        class="bi bi-capsule field-icon"
+                        aria-hidden="true"
+                    ></i>
+
+
+                    <input
+                        type="text"
+                        id="medicacao"
+                        name="medicacao"
+                        class="glass-input"
+                        placeholder="Ex: Losartana 50mg (opcional)"
+                    >
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 HÁBITOS E BEM-ESTAR
+            ================================================== -->
+
+            <div class="section-kicker">
+
+                Hábitos e bem-estar
+
+            </div>
+
+
+
+            <!-- ATIVIDADE FÍSICA -->
+
+            <div class="field-group">
+
+
+                <label
+                    class="field-label"
+                    id="atividade-label"
+                >
+
+                    Você pratica atividade física?
+
+                </label>
+
+
+                <div
+                    class="toggle-group"
+                    role="radiogroup"
+                    aria-labelledby="atividade-label"
+                >
+
+
+                    <input
+                        type="radio"
+                        name="atividade"
+                        id="atividade-sim"
+                        value="sim"
+                    >
+
+
+                    <label
+                        class="toggle-option"
+                        for="atividade-sim"
+                    >
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Sim
+
+                    </label>
+
+
+
+                    <input
+                        type="radio"
+                        name="atividade"
+                        id="atividade-nao"
+                        value="nao"
+                    >
+
+
+                    <label
+                        class="toggle-option"
+                        for="atividade-nao"
+                    >
+
+                        <i class="bi bi-x-circle"></i>
+
+                        Não
+
+                    </label>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 REDE DE CUIDADO
+            ================================================== -->
+
+            <div class="section-kicker">
+
+                Sua rede de cuidado
+
+            </div>
+
+
+            <p class="support-text">
+
+                Você poderá convidar pessoas de confiança
+                para acompanhar sua jornada de cuidado.
+
+            </p>
+
+
+
+            <!-- CONVIDAR -->
+
+            <button
+                type="button"
+                class="btn-invite"
+            >
+
+                <span class="invite-icon">
+
+                    <i class="bi bi-person-plus"></i>
+
+                </span>
+
+                Convidar amigos e familiares
+
+            </button>
+
+
+
+            <!-- FINALIZAR -->
+
+            <button
+                type="submit"
+                class="btn-start"
+            >
+
+                Finalizar
+
+                <i class="bi bi-arrow-right"></i>
+
+            </button>
+
+
+            <button type="button" class="btn-start" data-logout>
+                Sair
+                <i class="bi bi-box-arrow-right" aria-hidden="true"></i>
+            </button>
+
+        </form>
+
+
+    </main>
+
+
+<script src="js/personalizacao.js"></script>
+
+    <!-- NAVEGAÇÃO DAIJI -->
+    <nav class="daiji-tabbar" aria-label="Navegação principal">
+        <div class="daiji-tabbar-inner">
+            <a href="score.html" class="daiji-tab" aria-label="Início"><i class="bi bi-house"></i><span>Início</span></a>
+            <a href="descobrir.html" class="daiji-tab" aria-label="Descobrir"><i class="bi bi-search"></i><span>Descobrir</span></a>
+            <a href="agendar.html" class="daiji-tab" aria-label="Agendar"><i class="bi bi-calendar3"></i><span>Agendar</span></a>
+            <a href="comunidade.html" class="daiji-tab" aria-label="Comunidade"><i class="bi bi-people"></i><span>Comunidade</span></a>
+            <a href="personalizacao.html" class="daiji-tab active" aria-current="page" aria-label="Perfil"><i class="bi bi-person"></i><span>Perfil</span></a>
+        </div>
+    </nav>
+
+</body>
+
+</html>

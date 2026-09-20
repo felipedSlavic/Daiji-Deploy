@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contato — Daiji</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div id="daijiNav"></div>
+<script src="js/nav.js"></script>
+<noscript><nav class="oura-nav solid"><div class="row-nav"><a class="brand" href="index.html">DA<span class="bar">|</span>JI</a><div class="links"><a href="index.html">Início</a><a href="especialidades.html">Especialidades</a><a href="telemedicina.html">Telemedicina</a><a href="planos.html">Planos</a><a href="como-funciona.html">Como Funciona</a><a href="estrategia.html">Estratégia</a><a href="seguranca.html">Segurança</a><a href="sobre.html">Sobre</a><a href="contato.html">Contato</a></div></div></nav></noscript>
+
+<header class="page-head">
+  <span class="eyebrow" style="justify-content:center; display:flex;">Fale com a gente</span>
+  <h1>Como podemos ajudar?</h1>
+  <p>Converse com o Assistente Daiji para tirar dúvidas rápidas, ou envie uma mensagem direta para o time do projeto pelo formulário.</p>
+</header>
+
+<main>
+  <!-- CHATBOT — SEÇÃO DE DESTAQUE -->
+  <section class="sec" id="assistente">
+    <div class="container-ap">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center;">
+
+        <div class="fx-in">
+          <span class="eyebrow">Assistente Daiji</span>
+          <h2 style="font-size:clamp(28px,3.4vw,40px); margin-bottom:16px;">Tire suas dúvidas com o Assistente Daiji.</h2>
+          <p style="color:var(--muted); line-height:1.65; font-size:15.5px; margin-bottom:10px;">É o mesmo assistente que aparece no ícone de chat em todas as páginas do site. Ele responde dúvidas frequentes sobre a plataforma — o que é a Daiji, como funciona, planos, especialidades, segurança dos dados e como falar com o time.</p>
+          <button class="btn-explore" id="openChatInline">Conversar com o assistente</button>
+        </div>
+
+        <div class="fx-in">
+          <div style="background:var(--panel); border:1px solid var(--border); border-radius:22px; overflow:hidden; box-shadow:0 30px 70px var(--shadow);">
+            <div class="chat-head chat-head-inline" style="border-bottom:1px solid var(--border);">
+              <div class="av"></div>
+              <div class="t"><b>Assistente Daiji</b><span>Online</span></div>
+            </div>
+            <div class="chat-body" id="chatBodyInline" style="height:280px;">
+              <div class="chat-bubble bot">Olá! 👋 Sou o Assistente Daiji. Pergunte sobre a plataforma ou use um dos atalhos abaixo.</div>
+            </div>
+            <div class="chat-quick" id="chatQuickInline">
+              <button type="button" class="chip-q" data-q="O que é a DAIJI?">O que é a DAIJI?</button>
+              <button type="button" class="chip-q" data-q="Como funciona o Risk Score?">Como funciona o Risk Score?</button>
+              <button type="button" class="chip-q" data-q="Quais são os planos?">Quais são os planos?</button>
+              <button type="button" class="chip-q" data-q="Quais especialidades estão disponíveis?">Quais especialidades estão disponíveis?</button>
+              <button type="button" class="chip-q" data-q="Meus dados estão seguros?">Meus dados estão seguros?</button>
+              <button type="button" class="chip-q" data-q="Como entro em contato?">Como entro em contato?</button>
+            </div>
+            <form class="chat-input" id="chatFormInline">
+              <input id="chatInputInline" type="text" placeholder="Digite sua mensagem…" autocomplete="off">
+              <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-alt">
+    <div class="container-ap">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:50px;">
+        <div class="fx-in">
+          <span class="eyebrow">Fale com o time</span>
+          <h2 style="font-size:clamp(26px,3vw,36px); margin-bottom:16px;">Envie uma mensagem</h2>
+          <p style="color:var(--muted); line-height:1.6; font-size:15px; margin-bottom:26px;">Dúvidas sobre o piloto, a arquitetura, a parceria com a Unimed ou o projeto FIAP Challenge? Preencha o formulário.</p>
+          <div style="display:flex; flex-wrap:wrap;">
+            <span class="trust-badge"><span class="d"></span>Projeto FIAP Challenge 2026</span>
+            <span class="trust-badge"><span class="d"></span>Parceria Unimed Nacional</span>
+          </div>
+        </div>
+        <form class="fx-in" onsubmit="return false;">
+          <div class="form-field">
+            <label>Nome</label>
+            <input type="text" placeholder="Seu nome completo">
+          </div>
+          <div class="form-field">
+            <label>E-mail</label>
+            <input type="email" placeholder="voce@email.com">
+          </div>
+          <div class="form-field">
+            <label>Assunto</label>
+            <select>
+              <option>Proposta de piloto</option>
+              <option>Arquitetura &amp; segurança</option>
+              <option>Parceria</option>
+              <option>Avaliação acadêmica</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>Mensagem</label>
+            <textarea placeholder="Como podemos ajudar?"></textarea>
+          </div>
+          <button type="submit" class="btn-explore" style="width:100%;">Enviar mensagem</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="oura-footer">
+  <div class="container-ap">
+    <div class="newsletter">
+      <div><h4>Fale com o time Daiji</h4><p>Dúvidas sobre o piloto, a arquitetura ou a parceria com a Unimed.</p></div>
+      <form onsubmit="return false;">
+        <input type="email" placeholder="Seu e-mail">
+        <button type="submit">Inscrever</button>
+      </form>
+    </div>
+    <div class="foot-cols">
+      <div>
+        <h6>Daiji</h6>
+        <p style="font-size:13.5px; color:var(--muted); line-height:1.6; max-width:260px;">だいじ — "aquilo que importa e merece cuidado." A camada de cuidado preditivo que transforma rotina em prevenção.</p>
+      </div>
+      <div>
+        <h6>Produto</h6>
+        <ul>
+          <li><a href="especialidades.html">Especialidades</a></li>
+          <li><a href="planos.html">Planos</a></li>
+          <li><a href="como-funciona.html">Como funciona</a></li>
+          <li><a href="estrategia.html">Estratégia de captação</a></li>
+        </ul>
+      </div>
+      <div>
+        <h6>Empresa</h6>
+        <ul>
+          <li><a href="sobre.html">Sobre a Daiji</a></li>
+          <li><a href="seguranca.html">Segurança &amp; LGPD</a></li>
+          <li><a href="contato.html">Contato</a></li>
+        </ul>
+      </div>
+      <div>
+        <h6>Legal</h6>
+        <ul>
+          <li><a href="seguranca.html">Privacidade</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Daiji. Projeto FIAP Challenge em parceria com Unimed Nacional.</span>
+      <span><a href="seguranca.html">Privacidade</a><a href="contato.html">Contato</a></span>
+    </div>
+  </div>
+</footer>
+
+<button class="chat-fab" id="chatFab" aria-label="Abrir assistente Daiji">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H9l-4 4V16H4z"/></svg>
+  <span class="dot-badge"></span>
+</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-head">
+    <div class="av"></div>
+    <div class="t"><b>Assistente Daiji</b><span>Online</span></div>
+    <button class="chat-close" id="chatClose" aria-label="Fechar">✕</button>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <div class="chat-bubble bot">Olá! Estou aqui se preferir conversar por aqui em vez do formulário.</div>
+  </div>
+  <div class="chat-quick" id="chatQuick">
+    <button type="button" class="chip-q" data-q="O que é a DAIJI?">O que é a DAIJI?</button>
+    <button type="button" class="chip-q" data-q="Como funciona o Risk Score?">Como funciona o Risk Score?</button>
+    <button type="button" class="chip-q" data-q="Quais são os planos?">Quais são os planos?</button>
+    <button type="button" class="chip-q" data-q="Quais especialidades estão disponíveis?">Quais especialidades estão disponíveis?</button>
+    <button type="button" class="chip-q" data-q="Meus dados estão seguros?">Meus dados estão seguros?</button>
+    <button type="button" class="chip-q" data-q="Como entro em contato?">Como entro em contato?</button>
+  </div>
+  <form class="chat-input" id="chatForm">
+    <input id="chatInput" type="text" placeholder="Digite sua mensagem…" autocomplete="off">
+    <button type="submit" aria-label="Enviar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  </form>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

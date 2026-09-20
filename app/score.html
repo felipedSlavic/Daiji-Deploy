@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DAIJI | Meu Score</title>
+
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- Google Fonts -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="css/score.css"
+    >
+
+    <!-- Identidade Daiji -->
+    <link rel="stylesheet" href="../assets/daiji-brand.css">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
+
+
+    <script src="js/session.js" data-private></script>
+    <script src="js/api-config.js"></script>
+    <script src="js/http.js"></script>
+    <script src="js/theme.js"></script>
+
+
+    <link rel="stylesheet" href="css/theme-light.css">
+</head>
+
+
+<body class="has-daiji-tabbar">
+
+
+    <!-- =====================================================
+         FUNDO
+    ====================================================== -->
+
+    <div class="ambient">
+
+        <div class="glow-orb one"></div>
+
+        <div class="glow-orb two"></div>
+
+
+        <svg
+            viewBox="0 0 800 300"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <path
+                d="M0,180 C150,120 300,260 450,170 C600,90 700,200 800,140 L800,300 L0,300 Z"
+                fill="#0f2f22"
+            />
+
+            <path
+                d="M0,220 C180,160 320,280 480,200 C620,130 720,230 800,190 L800,300 L0,300 Z"
+                fill="#123a29"
+                opacity="0.75"
+            />
+
+        </svg>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO
+    ====================================================== -->
+
+    <main class="page">
+
+
+        <!-- =================================================
+             CABEÇALHO
+        ================================================== -->
+
+        <header class="page-header">
+
+
+            <div class="header-left">
+
+
+                <a class="daiji-brand compact" href="score.html" aria-label="Daiji"><img class="daiji-mark" src="../assets/logo.png" alt="Logo Daiji"><span class="daiji-brand-name">DAIJI</span><span class="daiji-brand-dot"></span></a>
+
+
+                <div class="header-copy">
+
+                    <span class="eyebrow">
+                        Sua saúde hoje
+                    </span>
+
+                    <h1>
+                        Meu Score
+                    </h1>
+
+                    <p id="todayDate">
+                        Atualizado hoje
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- PONTOS -->
+
+            <div class="points-card">
+
+                <i class="bi bi-star-fill"></i>
+
+                <strong id="ptsNum">
+                    1.250
+                </strong>
+
+                <span>
+                    pts
+                </span>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- =================================================
+             SCORE PRINCIPAL
+        ================================================== -->
+
+        <section class="score-hero">
+
+
+            <div class="score-gauge">
+
+
+                <svg
+                    viewBox="0 0 150 150"
+                    aria-hidden="true"
+                >
+
+                    <defs>
+
+                        <linearGradient
+                            id="scoreGradient"
+                            x1="0"
+                            y1="0"
+                            x2="1"
+                            y2="1"
+                        >
+
+                            <stop
+                                offset="0%"
+                                stop-color="#17a374"
+                            />
+
+                            <stop
+                                offset="100%"
+                                stop-color="#35d399"
+                            />
+
+                        </linearGradient>
+
+                    </defs>
+
+
+                    <circle
+                        class="gauge-track"
+                        cx="75"
+                        cy="75"
+                        r="60"
+                    ></circle>
+
+
+                    <circle
+                        class="gauge-progress"
+                        id="scoreArc"
+                        style="visibility: hidden"
+                        cx="75"
+                        cy="75"
+                        r="60"
+                    ></circle>
+
+                </svg>
+
+
+                <div class="gauge-value">
+
+                    <strong id="scoreValue">
+                        —
+                    </strong>
+
+                    <span>
+                        /100
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="score-content">
+
+
+                <span class="section-kicker">
+                    Score Daiji
+                </span>
+
+
+                <h2>
+                    Carregando score...
+                </h2>
+
+
+                <p>
+
+                    Seu score considera informações da sua rotina
+                    e dos registros realizados no aplicativo.
+
+                </p>
+
+
+                <div class="monitor-status">
+
+                    <span class="status-dot"></span>
+
+                    Monitoramento ativo
+
+                </div>
+
+
+                <div class="score-update">
+
+                    <i class="bi bi-clock"></i>
+
+                    <span id="scoreUpdate" role="status">Consultando seu score.</span>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             GRID PRINCIPAL
+        ================================================== -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- =================================================
+                 COLUNA ESQUERDA
+            ================================================== -->
+
+            <div class="main-column">
+
+
+                <!-- INDICADORES -->
+
+                <section>
+
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                Indicadores
+                            </span>
+
+                            <h2>
+                                Como você está
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="stats-grid">
+
+
+                        <!-- PRESSÃO -->
+
+                        <article class="stat-card">
+
+                            <div class="stat-top">
+
+                                <span class="stat-icon">
+
+                                    <i class="bi bi-heart-pulse"></i>
+
+                                </span>
+
+
+                                <span class="status-tag good">
+                                    Normal
+                                </span>
+
+                            </div>
+
+
+                            <strong class="stat-value">
+
+                                120/80
+
+                                <small>
+                                    mmHg
+                                </small>
+
+                            </strong>
+
+
+                            <span class="stat-label">
+                                Pressão arterial
+                            </span>
+
+
+                            <div class="mini-progress">
+
+                                <span style="width: 78%"></span>
+
+                            </div>
+
+                        </article>
+
+
+
+                        <!-- SONO -->
+
+                        <article class="stat-card">
+
+                            <div class="stat-top">
+
+                                <span class="stat-icon">
+
+                                    <i class="bi bi-moon-stars"></i>
+
+                                </span>
+
+
+                                <span class="status-tag warning">
+                                    Atenção
+                                </span>
+
+                            </div>
+
+
+                            <strong class="stat-value">
+
+                                6h 40m
+
+                            </strong>
+
+
+                            <span class="stat-label">
+                                Sono
+                            </span>
+
+
+                            <div class="mini-progress">
+
+                                <span style="width: 68%"></span>
+
+                            </div>
+
+                        </article>
+
+
+
+                        <!-- PASSOS -->
+
+                        <article class="stat-card">
+
+                            <div class="stat-top">
+
+                                <span class="stat-icon">
+
+                                    <i class="bi bi-person-walking"></i>
+
+                                </span>
+
+
+                                <span class="status-tag neutral">
+                                    71%
+                                </span>
+
+                            </div>
+
+
+                            <strong class="stat-value">
+
+                                4.280
+
+                            </strong>
+
+
+                            <span class="stat-label">
+                                Passos hoje · meta 6.000
+                            </span>
+
+
+                            <div class="mini-progress">
+
+                                <span style="width: 71%"></span>
+
+                            </div>
+
+                        </article>
+
+
+
+                        <!-- HIDRATAÇÃO -->
+
+                        <article class="stat-card">
+
+                            <div class="stat-top">
+
+                                <span class="stat-icon">
+
+                                    <i class="bi bi-droplet"></i>
+
+                                </span>
+
+
+                                <span class="status-tag warning">
+                                    Abaixo
+                                </span>
+
+                            </div>
+
+
+                            <strong class="stat-value">
+
+                                1,2
+
+                                <small>
+                                    L
+                                </small>
+
+                            </strong>
+
+
+                            <span class="stat-label">
+                                Hidratação
+                            </span>
+
+
+                            <div class="mini-progress">
+
+                                <span style="width: 60%"></span>
+
+                            </div>
+
+                        </article>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- =================================================
+                     DIMENSÕES DO SCORE
+                ================================================== -->
+
+                <section class="dimensions-section">
+
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                Composição
+                            </span>
+
+                            <h2>
+                                Dimensões do seu score
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="dimensions-card">
+
+
+                        <div class="dimension-row">
+
+                            <span class="dimension-icon">
+
+                                <i class="bi bi-moon-stars"></i>
+
+                            </span>
+
+
+                            <div class="dimension-content">
+
+                                <div class="dimension-header">
+
+                                    <span>
+                                        Sono
+                                    </span>
+
+                                    <strong>
+                                        68
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="dimension-bar">
+
+                                    <span style="width: 68%"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="dimension-row">
+
+                            <span class="dimension-icon">
+
+                                <i class="bi bi-activity"></i>
+
+                            </span>
+
+
+                            <div class="dimension-content">
+
+                                <div class="dimension-header">
+
+                                    <span>
+                                        Atividade
+                                    </span>
+
+                                    <strong>
+                                        76
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="dimension-bar">
+
+                                    <span style="width: 76%"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="dimension-row">
+
+                            <span class="dimension-icon">
+
+                                <i class="bi bi-heart"></i>
+
+                            </span>
+
+
+                            <div class="dimension-content">
+
+                                <div class="dimension-header">
+
+                                    <span>
+                                        Bem-estar
+                                    </span>
+
+                                    <strong>
+                                        72
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="dimension-bar">
+
+                                    <span style="width: 72%"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="dimension-row">
+
+                            <span class="dimension-icon">
+
+                                <i class="bi bi-capsule"></i>
+
+                            </span>
+
+
+                            <div class="dimension-content">
+
+                                <div class="dimension-header">
+
+                                    <span>
+                                        Adesão ao cuidado
+                                    </span>
+
+                                    <strong>
+                                        85
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="dimension-bar">
+
+                                    <span style="width: 85%"></span>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 COLUNA DIREITA
+            ================================================== -->
+
+            <aside class="side-column">
+
+
+                <!-- AÇÃO -->
+
+                <section>
+
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                Hoje
+                            </span>
+
+                            <h2>
+                                Ação recomendada
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <button
+                        type="button"
+                        class="daily-action"
+                        id="actionCard"
+                        aria-haspopup="dialog"
+                    >
+
+
+                        <span
+                            class="daily-icon"
+                            id="actionIc"
+                        >
+
+                            <i class="bi bi-check2-square"></i>
+
+                        </span>
+
+
+                        <span class="daily-copy">
+
+                            <strong id="actionTitle">
+
+                                Fazer Check-in Diário
+
+                            </strong>
+
+
+                            <small id="actionSub">
+
+                                Leva cerca de 2 min · +50 pts
+
+                            </small>
+
+                        </span>
+
+
+                        <i class="bi bi-arrow-right daily-arrow"></i>
+
+
+                    </button>
+
+
+                </section>
+
+
+
+                <!-- ESTA SEMANA -->
+
+                <section class="week-section">
+
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="section-kicker">
+                                Histórico
+                            </span>
+
+                            <h2>
+                                Esta semana
+                            </h2>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="week">
+
+
+                        <div class="week-day">
+
+                            <span>Seg</span>
+
+                            <strong>18</strong>
+
+                            <i></i>
+
+                        </div>
+
+
+                        <div class="week-day">
+
+                            <span>Ter</span>
+
+                            <strong>19</strong>
+
+                            <i></i>
+
+                        </div>
+
+
+                        <div
+                            class="week-day today"
+                            id="wtoday"
+                        >
+
+                            <span>Qua</span>
+
+                            <strong>20</strong>
+
+                            <i></i>
+
+                            <b class="day-check">
+
+                                <i class="bi bi-check-lg"></i>
+
+                            </b>
+
+                        </div>
+
+
+                        <div class="week-day empty">
+
+                            <span>Qui</span>
+
+                            <strong>21</strong>
+
+                            <i></i>
+
+                        </div>
+
+
+                        <div class="week-day empty">
+
+                            <span>Sex</span>
+
+                            <strong>22</strong>
+
+                            <i></i>
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- INSIGHT -->
+
+                <section class="insight-card">
+
+
+                    <span class="insight-icon">
+
+                        <i class="bi bi-lightbulb"></i>
+
+                    </span>
+
+
+                    <div>
+
+                        <span class="section-kicker">
+                            Insight Daiji
+                        </span>
+
+
+                        <h3>
+                            Seu sono merece atenção
+                        </h3>
+
+
+                        <p>
+
+                            Nos últimos registros, sua duração média
+                            de sono está abaixo da faixa definida
+                            para sua rotina.
+
+                        </p>
+
+
+                        <button type="button">
+
+                            Ver detalhes
+
+                            <i class="bi bi-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+
+                </section>
+
+
+            </aside>
+
+
+        </div>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         NAVEGAÇÃO
+    ====================================================== -->
+
+    
+
+
+
+    <!-- =====================================================
+         CHECK-IN
+    ====================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="modal"
+        hidden
+    >
+
+
+        <div
+            class="modal-scrim"
+            id="scrim"
+        ></div>
+
+
+
+        <!-- FORMULÁRIO -->
+
+        <section
+            class="checkin-modal"
+            id="ciFlow"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Check-in diário"
+        >
+
+
+            <header class="checkin-header">
+
+
+                <div class="checkin-top">
+
+
+                    <button
+                        type="button"
+                        class="modal-back"
+                        id="ciBack"
+                        aria-label="Voltar"
+                    >
+
+                        <i class="bi bi-arrow-left"></i>
+
+                    </button>
+
+
+                    <div>
+
+                        <span class="section-kicker">
+                            +50 pontos
+                        </span>
+
+                        <h2>
+                            Check-in Diário
+                        </h2>
+
+                        <p>
+                            Conte como você está hoje
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="progress">
+
+                    <span id="ciProg"></span>
+
+                </div>
+
+
+            </header>
+
+
+
+            <div class="checkin-body">
+
+
+                <!-- SONO -->
+
+                <div class="question">
+
+
+                    <div class="question-title">
+
+                        <span>
+
+                            <i class="bi bi-moon-stars"></i>
+
+                        </span>
+
+                        <strong>
+
+                            Como foi seu sono esta noite?
+
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="chips"
+                        data-group="sono"
+                    >
+
+                        <button
+                            type="button"
+                            class="chip"
+                            data-val="Péssimo"
+                        >
+                            Péssimo
+                        </button>
+
+                        <button
+                            type="button"
+                            class="chip"
+                            data-val="Regular"
+                        >
+                            Regular
+                        </button>
+
+                        <button
+                            type="button"
+                            class="chip"
+                            data-val="Bom"
+                        >
+                            Bom
+                        </button>
+
+                        <button
+                            type="button"
+                            class="chip"
+                            data-val="Ótimo"
+                        >
+                            Ótimo
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- HORA -->
+
+                <div class="question">
+
+
+                    <div class="question-title">
+
+                        <span>
+
+                            <i class="bi bi-clock"></i>
+
+                        </span>
+
+                        <strong>
+                            Que horas você dormiu?
+                        </strong>
+
+                    </div>
+
+
+                    <div class="time-field">
+
+                        <span>
+                            Horário
+                        </span>
+
+                        <input
+                            type="time"
+                            id="horaInput"
+                            value="22:30"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ESTRESSE -->
+
+                <div class="question">
+
+
+                    <div class="question-title">
+
+                        <span>
+
+                            <i class="bi bi-emoji-neutral"></i>
+
+                        </span>
+
+                        <strong>
+
+                            Qual seu nível de estresse hoje?
+
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="chips stress"
+                        data-group="estresse"
+                    >
+
+                        <button
+                            type="button"
+                            class="chip"
+                            data-val="1"
+                        >
+                            1
+                        </button>
+
+                        <button
+                            type="button"
+                            class="chip"
+                            data-val="2"
+                        >
+                            2
+                        </button>
+
+                        <button
+                            type="button"
+                            class="chip"
+                            data-val="3"
+                        >
+                            3
+                        </button>
+
+                        <button
+                            type="button"
+                            class="chip"
+                            data-val="4"
+                        >
+                            4
+                        </button>
+
+                        <button
+                            type="button"
+                            class="chip"
+                            data-val="5"
+                        >
+                            5
+                        </button>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ALIMENTAÇÃO -->
+
+                <div class="question">
+
+
+                    <div class="question-title">
+
+                        <span>
+
+                            <i class="bi bi-egg-fried"></i>
+
+                        </span>
+
+                        <strong>
+                            Como foi sua alimentação?
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="options"
+                        data-group="dieta"
+                    >
+
+
+                        <button
+                            type="button"
+                            class="option"
+                            data-val="Segui bem minha dieta"
+                        >
+
+                            <i></i>
+
+                            Segui bem minha dieta
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="option"
+                            data-val="Alguns excessos"
+                        >
+
+                            <i></i>
+
+                            Mais ou menos, alguns excessos
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="option"
+                            data-val="Não me alimentei bem"
+                        >
+
+                            <i></i>
+
+                            Não me alimentei bem hoje
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- MEDICAÇÃO -->
+
+                <div class="question">
+
+
+                    <div class="question-title">
+
+                        <span>
+
+                            <i class="bi bi-capsule"></i>
+
+                        </span>
+
+                        <strong>
+                            Tomou todos os medicamentos?
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        class="options"
+                        data-group="remedio"
+                    >
+
+
+                        <button
+                            type="button"
+                            class="option"
+                            data-val="Sim, todos"
+                        >
+
+                            <i></i>
+
+                            Sim, todos
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="option"
+                            data-val="Esqueci um ou dois"
+                        >
+
+                            <i></i>
+
+                            Esqueci um ou dois
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="option"
+                            data-val="Não tomei hoje"
+                        >
+
+                            <i></i>
+
+                            Não tomei hoje
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <footer class="checkin-footer">
+
+
+                <button
+                    type="button"
+                    class="checkin-submit"
+                    id="ciSubmit"
+                    disabled
+                >
+
+                    Concluir Check-in
+
+                    <span>
+                        +50 pts
+                    </span>
+
+                    <i class="bi bi-check-lg"></i>
+
+                </button>
+
+
+            </footer>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             SUCESSO
+        ================================================== -->
+
+        <div
+            class="success-modal"
+            id="ciSuccess"
+            hidden
+        >
+
+
+            <div class="success-icon">
+
+                <i class="bi bi-check-lg"></i>
+
+            </div>
+
+
+            <span class="section-kicker">
+
+                Check-in registrado
+
+            </span>
+
+
+            <h3>
+
+                Check-in concluído!
+
+            </h3>
+
+
+            <p>
+
+                Suas respostas foram registradas e poderão
+                contribuir para a atualização do seu acompanhamento.
+
+            </p>
+
+
+            <div class="points-earned">
+
+                <i class="bi bi-star-fill"></i>
+
+                +50 pontos
+
+            </div>
+
+
+            <button
+                type="button"
+                id="ciDone"
+            >
+
+                Voltar ao Score
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- TOAST -->
+
+    <div
+        class="toast-message"
+        id="toast"
+    >
+
+        <i class="bi bi-check-circle-fill"></i>
+
+        <span id="toastMsg">
+
+            Check-in concluído · +50 pts
+
+        </span>
+
+    </div>
+
+
+
+    <script src="js/score.js"></script>
+
+
+    <!-- NAVEGAÇÃO DAIJI -->
+    <nav class="daiji-tabbar" aria-label="Navegação principal">
+        <div class="daiji-tabbar-inner">
+            <a href="score.html" class="daiji-tab active" aria-current="page" aria-label="Início"><i class="bi bi-house"></i><span>Início</span></a>
+            <a href="descobrir.html" class="daiji-tab" aria-label="Descobrir"><i class="bi bi-search"></i><span>Descobrir</span></a>
+            <a href="agendar.html" class="daiji-tab" aria-label="Agendar"><i class="bi bi-calendar3"></i><span>Agendar</span></a>
+            <a href="comunidade.html" class="daiji-tab" aria-label="Comunidade"><i class="bi bi-people"></i><span>Comunidade</span></a>
+            <a href="personalizacao.html" class="daiji-tab" aria-label="Perfil"><i class="bi bi-person"></i><span>Perfil</span></a>
+        </div>
+    </nav>
+
+</body>
+
+</html>

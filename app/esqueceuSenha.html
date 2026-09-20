@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DAIJI | Recuperar senha</title>
+
+
+    <!-- Bootstrap Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css"
+    >
+
+
+    <!-- Google Fonts -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- CSS próprio -->
+    <link
+        rel="stylesheet"
+        href="css/esqueceuSenha.css"
+    >
+
+    <!-- Identidade Daiji -->
+    <link rel="stylesheet" href="../assets/daiji-brand.css">
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
+
+    <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
+
+
+    <script src="js/theme.js"></script>
+
+
+    <link rel="stylesheet" href="css/theme-light.css">
+</head>
+
+
+<body>
+
+
+    <!-- FUNDO -->
+    <div class="ambient">
+
+        <div class="glow-orb one"></div>
+
+        <div class="glow-orb two"></div>
+
+
+        <svg
+            viewBox="0 0 800 300"
+            preserveAspectRatio="none"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+
+            <path
+                d="M0,180 C150,120 300,260 450,170 C600,90 700,200 800,140 L800,300 L0,300 Z"
+                fill="#0f2f22"
+            />
+
+            <path
+                d="M0,220 C180,160 320,280 480,200 C620,130 720,230 800,190 L800,300 L0,300 Z"
+                fill="#123a29"
+                opacity="0.8"
+            />
+
+        </svg>
+
+    </div>
+
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="device-frame">
+
+        <div class="composition">
+
+
+            <!-- LOGO -->
+            <div class="brand-block">
+
+                <span class="daiji-brand hero" aria-label="Daiji"><img class="daiji-mark" src="../assets/logo.png" alt="Logo Daiji"><span class="daiji-brand-name">DAIJI</span><span class="daiji-brand-dot"></span></span>
+
+            </div>
+
+
+            <!-- RECUPERAÇÃO -->
+            <section class="password-area">
+
+                <h1 class="page-title">
+                    Esqueceu a senha?
+                </h1>
+
+
+                <p class="page-subtitle">
+                    Não se preocupe! Insira seu e-mail para redefinir sua senha.
+                </p>
+
+
+                <form class="recovery-form">
+
+
+                    <!-- EMAIL -->
+                    <div class="field-wrap">
+
+                        <i
+                            class="bi bi-envelope field-icon"
+                        ></i>
+
+
+                        <input
+                            type="email"
+                            class="glass-input"
+                            id="email"
+                            name="email"
+                            placeholder="E-mail"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- BOTÃO -->
+                    <button
+                        type="submit"
+                        class="btn-continue"
+                    >
+
+                        Continuar
+
+                    </button>
+
+
+                    <!-- VOLTAR -->
+                    <div class="back-row">
+
+                        <a href="login.html">
+
+                            <i class="bi bi-arrow-left"></i>
+
+                            Voltar para o login
+
+                        </a>
+
+                    </div>
+
+
+                </form>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+    <script>
+        document
+            .querySelector('.recovery-form')
+            .addEventListener('submit', function (event) {
+
+                event.preventDefault()
+
+                if (!this.checkValidity()) {
+                    this.reportValidity()
+                    return
+                }
+
+                window.location.href = 'login.html'
+
+            })
+    </script>
+
+
+</body>
+
+</html>

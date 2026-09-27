@@ -1,6 +1,7 @@
 package br.fiap.daiji.telegram;
 
 import br.fiap.daiji.factory.ConnectionFactory;
+import br.fiap.daiji.assistant.BeneficiaryJourney;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
@@ -30,33 +31,34 @@ class MedicacoesIdsReceiverTest {
                     RunScript.execute(c,reader);
                 }
             }
+            s.execute("UPDATE BENEFICIARIO SET email = 'bruno@daiji.com' WHERE id_beneficiario = 3");
         }
     }
     void receive(String text) throws Exception {
         receiver.receive(new TelegramUpdate(10L,new TelegramUpdate.Message(new TelegramUpdate.Chat(9000000000L,"private"),text)));
     }
-    @ParameterizedTest @ValueSource(strings = {"/medicacoes_ids 1", "/medicacoes\\_ids 1", "  /MEDICACOES_IDS@DaijiBot   1  ", "/medicacoes\\_ids@DaijiBot 1"})
+    @ParameterizedTest @ValueSource(strings = {"/medicacoes_ids rafael@daiji.com", "/medicacoes\\_ids rafael@daiji.com", "  /MEDICACOES_IDS@DaijiBot   rafael@daiji.com  ", "/medicacoes\\_ids@DaijiBot rafael@daiji.com"})
     void caminhoRealAteSqlMostraIdsESomenteMedicacoesDoBeneficiario(String text) throws Exception {
         receive(text);
         verify(client).sendMessage(9000000000L,"💊 Medicações cadastradas (IDs)\n\n• ID 1 — Medicamento A — 10 mg — 08:00");
         verifyNoMoreInteractions(client);
     }
-    @ParameterizedTest @ValueSource(strings = {"/medicacoes_ids 2", "/medicacoes\\_ids 2"})
+    @ParameterizedTest @ValueSource(strings = {"/medicacoes_ids maria@daiji.com", "/medicacoes\\_ids maria@daiji.com"})
     void outroBeneficiarioCamposOpcionais(String text) throws Exception {
         receive(text);
         verify(client).sendMessage(9000000000L,"💊 Medicações cadastradas (IDs)\n\n• ID 2 — Medicamento B — Não informado — Não informado");
     }
-    @ParameterizedTest @ValueSource(strings = {"/medicacoes_ids 999", "/medicacoes\\_ids 999"})
+    @ParameterizedTest @ValueSource(strings = {"/medicacoes_ids ausente@daiji.com", "/medicacoes\\_ids ausente@daiji.com"})
     void inexistente(String text) throws Exception {
-        receive(text); verify(client).sendMessage(9000000000L,"Beneficiário não encontrado.");
+        receive(text); verify(client).sendMessage(9000000000L,BeneficiaryJourney.EMAIL_NOT_FOUND);
     }
     @ParameterizedTest @ValueSource(strings = {"/medicacoes_ids", "/medicacoes_ids abc", "/medicacoes_ids 0", "/medicacoes_ids -1", "/medicacoes\\_ids abc"})
     void invalidoOrientaUso(String text) throws Exception {
         receive(text);
-        verify(client).sendMessage(9000000000L,"Formato inválido.\nUse: /medicacoes_ids <idBeneficiario>\nExemplo: /medicacoes_ids 1");
+        verify(client).sendMessage(9000000000L,text.equals("/medicacoes_ids") ? BeneficiaryJourney.ASK_EMAIL : BeneficiaryJourney.INVALID_EMAIL);
         verifyNoInteractions(factory);
     }
-    @ParameterizedTest @ValueSource(strings = {"/medicacoes_ids 3", "/medicacoes\\_ids 3"})
+    @ParameterizedTest @ValueSource(strings = {"/medicacoes_ids bruno@daiji.com", "/medicacoes\\_ids bruno@daiji.com"})
     void listaVazia(String text) throws Exception {
         receive(text); verify(client).sendMessage(9000000000L,"Nenhuma medicação cadastrada.");
     }

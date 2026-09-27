@@ -10,13 +10,13 @@ import org.springframework.web.server.ResponseStatusException;
 @Component
 public class NaturalLanguageAssistant implements NaturalLanguageResponder {
     public static final String FALLBACK = "Não consegui interpretar essa pergunta agora.\nVocê ainda pode usar /ajuda para consultar os comandos disponíveis.";
-    public static final String ASK_ID = "Informe o ID do beneficiário.\nExemplo: Como está o score do beneficiário 1?";
-    public static final String INVALID_ID = "Informe um único ID de beneficiário válido, inteiro e positivo.\nExemplo: Como está o score do beneficiário 1?";
+    public static final String ASK_ID = "Informe o e-mail utilizado na Daiji.\nExemplo: Como está o score de usuario@exemplo.com?";
+    public static final String INVALID_ID = "Informe o e-mail utilizado na Daiji.\nExemplo: /score usuario@exemplo.com";
     public static final String OUT_OF_SCOPE = "Não posso diagnosticar, prescrever, alterar tratamentos ou fornecer dados privados e credenciais. "
             + "O Daiji é um MVP de acompanhamento e seu Score é demonstrativo. Para orientação médica, procure um profissional de saúde. "
             + "Em situações urgentes, procure atendimento de emergência.";
     public static final String HELP = "Olá! Sou o assistente Daiji. Posso consultar e explicar o score, listar medicações cadastradas e mostrar check-ins recentes.\n\n"
-            + "Informe o ID, por exemplo: Explique o score do beneficiário 1.\nOs comandos estão em /ajuda.\n\n" + MessageRouter.AVISO;
+            + "Informe o e-mail, por exemplo: Explique o score de usuario@exemplo.com.\nOs comandos estão em /ajuda.\n\n" + MessageRouter.AVISO;
     public static final String EXPLANATION_FAILED = "Não foi possível gerar a explicação detalhada agora.";
     private final Optional<GeminiClient> client;
     private final Map<String, CommandHandler> handlers;

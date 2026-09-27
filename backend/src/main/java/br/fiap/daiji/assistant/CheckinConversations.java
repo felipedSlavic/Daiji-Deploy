@@ -22,8 +22,8 @@ public class CheckinConversations implements AutoCloseable {
     public static final String MOOD = "Como está seu humor?\nSugestões: CALMO, REGULAR ou TRISTE. Pode informar outro texto de até 20 bytes UTF-8.";
     public static final String NOTE = "Deseja adicionar uma observação sobre o dia?\nEnvie o texto ou digite PULAR.";
     public static final String ACTIVE = "Existe um check-in em andamento. Responda à etapa atual ou use /cancelar.";
-    public static final String EXPIRED = "O check-in expirou após 15 minutos de inatividade. Inicie novamente com /checkin <idBeneficiario>.";
-    public static final String FAILED = "Não foi possível confirmar o registro agora. O fluxo foi encerrado. Consulte /checkins <idBeneficiario> antes de iniciar outro check-in.";
+    public static final String EXPIRED = "O check-in expirou após 15 minutos de inatividade. Inicie novamente com /checkin <email>.";
+    public static final String FAILED = "Não foi possível confirmar o registro agora. O fluxo foi encerrado. Consulte /checkins <email> antes de iniciar outro check-in.";
     private enum Stage { STRESS, SLEEP, FOOD, MOOD, NOTE, CONFIRM }
     private static class State {
         final int id;
@@ -51,7 +51,7 @@ public class CheckinConversations implements AutoCloseable {
                 service.validarBeneficiario(beneficiario);
                 return new State(beneficiario,clock.instant());
             } catch (ResponseStatusException e) {
-                reply[0] = e.getStatusCode().value() == 404 ? "Beneficiário não encontrado." : "Informe um ID de beneficiário válido.";
+                reply[0] = e.getStatusCode().value() == 404 ? "Beneficiário não encontrado." : "Não foi possível localizar seu cadastro. Inicie novamente usando seu e-mail.";
             } catch (Exception e) { reply[0] = MessageRouter.ERRO; }
             return null;
         });

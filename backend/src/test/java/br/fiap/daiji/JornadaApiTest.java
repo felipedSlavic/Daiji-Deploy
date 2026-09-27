@@ -36,6 +36,7 @@ class JornadaApiTest {
             s.execute("DROP ALL OBJECTS");
             for (String file : new String[]{"/cp06-fixture.sql","/cp09-fixture.sql"})
                 try (var reader = new InputStreamReader(getClass().getResourceAsStream(file),StandardCharsets.UTF_8)) { RunScript.execute(c,reader); }
+            s.execute("UPDATE BENEFICIARIO SET email = 'bruno@daiji.com' WHERE id_beneficiario = 3");
         }
     }
     long count(String table) throws Exception {
@@ -100,7 +101,7 @@ class JornadaApiTest {
         mvc.perform(post("/api/beneficiarios/1/checkins").contentType("application/json")
                 .content("{\"nivelEstresse\":3,\"canal\":\"TELEGRAM\"}"))
                 .andExpect(status().isCreated()).andExpect(jsonPath("$.canal").value("APP"));
-        journey.route(900,"/checkin 1");
+        journey.route(900,"/checkin rafael@daiji.com");
         for (String text : new String[]{"3","BOA","BOA","CALMO","PULAR"}) journey.route(900,text);
         assertEquals(1,count("CHECKIN"));
         assertEquals(new AssistantResponse.Text("Check-in registrado com sucesso. ✅"),journey.route(900,"CONFIRMAR"));
@@ -110,14 +111,14 @@ class JornadaApiTest {
         }
     }
     @Test void telegramConfirmaViaMesmoServiceERejeitaOutraPessoa() throws Exception {
-        assertEquals(new AssistantResponse.Text("Confirmação registrada com sucesso."),journey.route(910,"/confirmar 1 1 CONFIRMADO"));
+        assertEquals(new AssistantResponse.Text("Confirmação registrada com sucesso."),journey.route(910,"/confirmar rafael@daiji.com 1 CONFIRMADO"));
         assertEquals(1,count("CONFIRMACAO_MEDICACAO"));
-        assertEquals(new AssistantResponse.Text("Beneficiário ou medicação não encontrado para os IDs informados."),journey.route(910,"/confirmar 1 2 CONFIRMADO"));
+        assertEquals(new AssistantResponse.Text("Beneficiário ou medicação não encontrado para os dados informados."),journey.route(910,"/confirmar rafael@daiji.com 2 CONFIRMADO"));
         assertEquals(1,count("CONFIRMACAO_MEDICACAO"));
     }
     @Test void idsVisiveisNoNovoComandoSemMisturarBeneficiarios() {
         var formatter = new ResponseFormatter();
-        assertEquals("💊 Medicações cadastradas (IDs)\n\n• ID 1 — Medicamento A — 10 mg — 08:00",formatter.format(journey.route(920,"/medicacoes_ids 1")));
-        assertEquals("Nenhuma medicação cadastrada.",formatter.format(journey.route(920,"/medicacoes_ids 3")));
+        assertEquals("💊 Medicações cadastradas (IDs)\n\n• ID 1 — Medicamento A — 10 mg — 08:00",formatter.format(journey.route(920,"/medicacoes_ids rafael@daiji.com")));
+        assertEquals("Nenhuma medicação cadastrada.",formatter.format(journey.route(920,"/medicacoes_ids bruno@daiji.com")));
     }
 }

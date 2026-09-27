@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JourneyNaturalLanguage {
-    public static final String IDENTIFY = "Informe o ID do beneficiário e da medicação.\nUse /medicacoes_ids <idBeneficiario> para consultar os IDs das medicações cadastradas.";
-    public static final String CLARIFY = "Informe os IDs e o status explicitamente.\nUse /confirmar <idBeneficiario> <idMedicacao> PENDENTE|CONFIRMADO|PERDIDO.";
-    public static final String CHECKIN_FORMAT = "Informe o ID do beneficiário.\nUse /checkin <idBeneficiario> ou: Quero fazer o check-in do beneficiário 1.";
+    public static final String IDENTIFY = "Informe o e-mail do beneficiário e o ID da medicação.\nUse /medicacoes_ids <email> para consultar os IDs das medicações cadastradas.";
+    public static final String CLARIFY = "Informe o e-mail, o ID da medicação e o status explicitamente.\nUse /confirmar <email> <idMedicacao> PENDENTE|CONFIRMADO|PERDIDO.";
+    public static final String CHECKIN_FORMAT = "Informe o e-mail utilizado na Daiji.\nUse /checkin <email> ou: Quero fazer meu check-in.";
     private static final Pattern CHECKIN = Pattern.compile("(?:quero )?(?:fazer|realizar|registrar|iniciar) (?:o )?check[- ]?in (?:do|para o) (?:beneficiario|id) ([0-9]+)[.!?]?");
     private static final Pattern CONFIRM = Pattern.compile("(?:quero )?confirmar (?:a )?medicacao ([0-9]+) do (?:beneficiario|id) ([0-9]+) (?:como|com status|status) (pendente|confirmado|perdido)[.!]?");
     private static final Pattern TOOK = Pattern.compile("(?:o )?beneficiario ([0-9]+) tomou (?:a )?medicacao ([0-9]+)[.!]?");

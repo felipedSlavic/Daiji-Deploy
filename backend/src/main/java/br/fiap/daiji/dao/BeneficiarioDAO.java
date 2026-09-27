@@ -19,6 +19,35 @@ public class BeneficiarioDAO  implements GenericDAO<Beneficiario , Integer>{
         this.connectionFactory = connectionFactory;
     }
 
+    public java.util.Optional<Beneficiario> buscarPorEmail(String email) throws SQLException {
+        String sql = """
+                SELECT id_beneficiario, id_empresa, nome, cpf, email, data_nascimento,
+                       telefone_whatsapp, status_ativo, data_cadastro
+                FROM BENEFICIARIO
+                WHERE LOWER(email) = LOWER(?)
+                """;
+        try (Connection connection = connectionFactory.conectar();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email.strip());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return java.util.Optional.empty();
+                Beneficiario beneficiario = new Beneficiario();
+                beneficiario.setId(rs.getInt("id_beneficiario"));
+                Empresa empresa = new Empresa();
+                empresa.setId(rs.getInt("id_empresa"));
+                beneficiario.setEmpresa(empresa);
+                beneficiario.setNome(rs.getString("nome"));
+                beneficiario.setCpf(rs.getString("cpf"));
+                beneficiario.setEmail(rs.getString("email"));
+                beneficiario.setDataNascimento(rs.getDate("data_nascimento").toLocalDate());
+                beneficiario.setTelefone(rs.getString("telefone_whatsapp"));
+                beneficiario.setStatus(rs.getString("status_ativo"));
+                beneficiario.setDataCadastro(rs.getDate("data_cadastro").toLocalDate());
+                return java.util.Optional.of(beneficiario);
+            }
+        }
+    }
+
     public java.util.Optional<Beneficiario> buscarPorId(Integer id) throws SQLException {
         String sql = """
                 SELECT id_beneficiario, id_empresa, nome, cpf, email, data_nascimento,

@@ -10,13 +10,13 @@ import org.springframework.web.server.ResponseStatusException;
 public class MessageRouter {
     public static final String AVISO = "O Score Daiji é demonstrativo e não substitui avaliação profissional.";
     public static final String AJUDA = """
-            /score <id>
+            /score <email>
             Consulta o Score Daiji mais recente.
 
-            /medicacoes <id>
+            /medicacoes <email>
             Lista medicações cadastradas.
 
-            /checkins <id>
+            /checkins <email>
             Mostra os 3 check-ins mais recentes.
 
             /ajuda (ou /help)
@@ -45,13 +45,13 @@ public class MessageRouter {
                 Posso consultar informações do acompanhamento do MVP.
 
                 Comandos disponíveis:
-                /score <id>
-                /medicacoes <id>
-                /checkins <id>
+                /score <email>
+                /medicacoes <email>
+                /checkins <email>
                 /ajuda
 
                 Exemplo:
-                /score 1""");
+                /score usuario@exemplo.com""");
         if (comando.equals("/ajuda") || comando.equals("/help")) return new AssistantResponse.Text(AJUDA);
         var handler = handlers.get(comando);
         if (handler == null) return naturalText(text);
@@ -61,7 +61,7 @@ public class MessageRouter {
             id = Integer.parseInt(partes[1]);
             if (id < 1) throw new NumberFormatException();
         } catch (NumberFormatException e) {
-            return new AssistantResponse.Text("Formato inválido.\nUse: " + comando + " <idBeneficiario>\nExemplo: " + comando + " 1");
+            return new AssistantResponse.Text("Formato inválido.\nUse: " + comando + " <email>\nExemplo: " + comando + " usuario@exemplo.com");
         }
         try { return handler.handle(id); }
         catch (ResponseStatusException e) {

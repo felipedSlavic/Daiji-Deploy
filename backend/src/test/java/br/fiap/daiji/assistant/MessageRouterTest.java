@@ -33,7 +33,7 @@ class MessageRouterTest {
     }
     @Test void start() {
         assertEquals("Olá! Eu sou o assistente Daiji.\n\nPosso consultar informações do acompanhamento do MVP.\n\n"
-                + "Comandos disponíveis:\n/score <id>\n/medicacoes <id>\n/checkins <id>\n/ajuda\n\nExemplo:\n/score 1", reply("/start"));
+                + "Comandos disponíveis:\n/score <email>\n/medicacoes <email>\n/checkins <email>\n/ajuda\n\nExemplo:\n/score usuario@exemplo.com", reply("/start"));
         verifyNoInteractions(scores, meds, checkins);
     }
     @ParameterizedTest @ValueSource(strings = {"/ajuda", "/help", "  /AJUDA  ", "/help@DaijiBot"})
@@ -74,7 +74,7 @@ class MessageRouterTest {
             "/medicacoes", "/medicacoes abc", "/medicacoes -1", "/checkins", "/checkins xyz", "/checkins 0", "/score +1", "/score 1.5"})
     void idsInvalidos(String command) {
         String base = command.split(" ")[0];
-        assertEquals("Formato inválido.\nUse: " + base + " <idBeneficiario>\nExemplo: " + base + " 1", reply(command));
+        assertEquals("Formato inválido.\nUse: " + base + " <email>\nExemplo: " + base + " usuario@exemplo.com", reply(command));
         verifyNoInteractions(scores, meds, checkins);
     }
     @Test void medicacoes() throws Exception {

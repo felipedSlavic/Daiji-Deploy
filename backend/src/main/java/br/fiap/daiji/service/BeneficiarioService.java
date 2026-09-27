@@ -17,4 +17,12 @@ public class BeneficiarioService {
     public Optional<Beneficiario> buscarPorId(Integer id) throws SQLException {
         return beneficiarioDAO.buscarPorId(id);
     }
+
+    public Optional<Beneficiario> buscarPorEmail(String email) throws SQLException {
+        String normalized = email == null ? "" : email.strip();
+        if (normalized.length() > 254 || !normalized.matches("[^\\s@]+@[\\p{L}\\p{N}-]+(?:\\.[\\p{L}\\p{N}-]+)+")) {
+            throw new IllegalArgumentException("E-mail inválido.");
+        }
+        return beneficiarioDAO.buscarPorEmail(normalized);
+    }
 }

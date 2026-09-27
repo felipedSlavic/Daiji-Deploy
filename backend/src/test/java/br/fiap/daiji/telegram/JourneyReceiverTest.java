@@ -12,11 +12,14 @@ class JourneyReceiverTest {
         GeminiClient gemini = mock(GeminiClient.class); CheckinService service = mock(CheckinService.class);
         TelegramClient client = mock(TelegramClient.class); MessageRouter router = mock(MessageRouter.class);
         var confirmations = mock(ConfirmacaoMedicacaoService.class);
+        var people = mock(BeneficiarioService.class);
+        var person = new br.fiap.daiji.model.Beneficiario(); person.setId(1);
+        when(people.buscarPorEmail("usuario@exemplo.com")).thenReturn(Optional.of(person));
         try (var conversations = new CheckinConversations(service)) {
-            var journey = new BeneficiaryJourney(conversations,new JourneyNaturalLanguage(Optional.of(gemini)),confirmations,router);
+            var journey = new BeneficiaryJourney(conversations,new JourneyNaturalLanguage(Optional.of(gemini)),confirmations,router,people);
             var receiver = new TelegramUpdateReceiver(router,new ResponseFormatter(),client,journey);
             long chat = 9000000000L;
-            for (String text : List.of("/checkin 1","3","BOA","BOA","CALMO","PULAR","CONFIRMAR"))
+            for (String text : List.of("Quero fazer meu check-in","usuario@exemplo.com","3","BOA","BOA","CALMO","PULAR","CONFIRMAR"))
                 receiver.receive(new TelegramUpdate(1L,new TelegramUpdate.Message(new TelegramUpdate.Chat(chat,"private"),text)));
             verify(service).validarBeneficiario(1); verify(service).criar(eq(1),any(),eq(br.fiap.daiji.model.CanalCheckin.TELEGRAM));
             verify(client).sendMessage(chat,"Check-in registrado com sucesso. ✅"); verifyNoInteractions(gemini,router,confirmations);

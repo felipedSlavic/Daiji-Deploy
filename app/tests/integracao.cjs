@@ -150,6 +150,8 @@ async function main() {
                 await page.waitForFunction(() => !document.querySelector('[type="submit"]').disabled)
                 assert.equal(await page.evaluate(() => DaijiSession.estaAutenticado()), false)
                 assert.ok(await page.locator('#cadastroMessage').textContent())
+                assert.ok(page.url().endsWith('cadastro.html'))
+                assert.equal(await page.locator('#email').inputValue(), usuario.email)
             }, call => call.method === 'GET' ? empresas : { status })
         }
         await scenario('Cadastro confirmado com JSON inválido não é reenviado', async (page, calls) => {
@@ -192,6 +194,8 @@ async function main() {
             await page.goto(origin + '/app/score.html')
             await page.waitForFunction(() => document.querySelector('.score-content h2').textContent === 'Score ainda não calculado')
             await page.locator('#actionCard').click()
+            await page.locator('#passosInput').fill('0')
+            await page.locator('#aguaInput').fill('0')
             for (const group of ['sono', 'estresse', 'dieta', 'remedio']) {
                 await page.locator(`[data-group="${group}"] [data-val]`).first().click()
             }
@@ -218,6 +222,8 @@ async function main() {
                 await page.goto(origin + '/app/score.html')
                 await page.waitForFunction(() => document.querySelector('#scoreValue').textContent === '85')
                 await page.locator('#actionCard').click()
+                await page.locator('#passosInput').fill('0')
+                await page.locator('#aguaInput').fill('0')
                 for (const group of ['sono', 'estresse', 'dieta', 'remedio']) {
                     await page.locator(`[data-group="${group}"] [data-val]`).first().click()
                 }
@@ -257,6 +263,8 @@ async function main() {
                         assert.deepEqual(await page.locator(`[data-group="${group}"] [data-val]`).evaluateAll(els => els.map(el => el.dataset.val)), Object.keys(options))
                     }
                     await page.locator('#actionCard').click()
+                    await page.locator('#passosInput').fill('0')
+                    await page.locator('#aguaInput').fill('0')
                     for (const [group, value] of Object.entries({ sono: sonoVisual, estresse: '1', dieta: dietaVisual, remedio: 'Não tomei hoje' })) {
                         await page.locator(`[data-group="${group}"] [data-val="${value}"]`).click()
                     }
@@ -264,13 +272,102 @@ async function main() {
                     await page.waitForFunction(() => document.querySelector('#ciSuccess p').textContent.includes('seu score foi atualizado'))
                     assert.deepEqual(JSON.parse(calls.find(c => c.path.endsWith('/checkins')).body), {
                         nivelEstresse: 1, qualidadeSono: sonoApi, qualidadeAlimentacao: dietaApi,
-                        humor: null, respostaTexto: 'Horário de dormir: 22:30 | Medicação: Não tomei hoje'
+                        humor: null, respostaTexto: 'Sono: 7.5h (horas) | Passos: 0 | Água: 0 copos | Medicação: Não tomei hoje'
                     })
                     assert.equal(calls.filter(c => c.path.endsWith('/checkins')).length, 1)
                     assert.equal(await page.locator('#scoreValue').textContent(), String(valorScore))
                 }, call => ({ status: call.method === 'POST' ? 201 : 200, data: { ...score, valorScore } }), true)
             }
         }
+        async function preencherCheckin(page) {
+            await page.locator('#actionCard').click()
+            for (const group of ['sono', 'estresse', 'dieta', 'remedio']) {
+                await page.locator(`[data-group="${group}"] [data-val]`).first().click()
+            }
+            await page.locator('#passosInput').fill('0')
+            await page.locator('#aguaInput').fill('0')
+        }
+        for (const status of [400, 404, 503]) {
+            await scenario('Falha check-in ' + status + ' não conclui nem recalcula', async (page, calls) => {
+                await page.goto(origin + '/app/score.html')
+                await preencherCheckin(page)
+                await page.locator('#ciSubmit').click()
+                await page.waitForFunction(() => !document.querySelector('#ciSubmit').disabled)
+                assert.equal(await page.locator('#actionCard').evaluate(el => el.classList.contains('done')), false)
+                assert.equal(await page.evaluate(() => localStorage.getItem('daiji_checkin:7')), null)
+                assert.equal(calls.filter(c => c.path.endsWith('/recalcular')).length, 0)
+                assert.equal(await page.locator('[data-group="sono"] [aria-pressed="true"]').count(), 1)
+            }, call => call.method === 'POST' ? { status } : { data: score }, true)
+        }
+        for (const cache of ['legado', 'ontem', 'outra-pessoa', 'hoje']) {
+            await scenario('Cache check-in isolado: ' + cache, async page => {
+                await page.goto(origin + '/app/score.html')
+                await page.evaluate(tipo => {
+                    const now = new Date()
+                    const data = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0')
+                    const key = tipo === 'legado' ? 'daiji_checkin' : tipo === 'outra-pessoa' ? 'daiji_checkin:99' : 'daiji_checkin:7'
+                    localStorage.setItem(key, JSON.stringify({ done: true, idBeneficiario: tipo === 'outra-pessoa' ? 99 : 7,
+                        data: tipo === 'ontem' ? '2000-01-01' : data, healthScore: 99 }))
+                }, cache)
+                await page.reload()
+                await page.waitForFunction(() => document.querySelector('#scoreValue').textContent === '85')
+                assert.equal(await page.locator('#actionCard').evaluate(el => el.classList.contains('done')), cache === 'hoje')
+                if (cache !== 'hoje') await preencherCheckin(page)
+            }, () => ({ data: score }), true)
+        }
+        await scenario('Personalização persiste medicação e prefere dados locais por pessoa', async (page, calls) => {
+            await page.goto(origin + '/app/personalizacao.html')
+            await page.locator('#doencas').fill('Hipertensão')
+            await page.locator('label[for="diabetes-sim"]').click()
+            await page.locator('#medicacao').fill('Medicação de teste')
+            await page.locator('[type="submit"]').click()
+            await page.waitForURL('**/score.html')
+            const post = calls.find(c => c.method === 'POST')
+            assert.equal(post.path, '/api/beneficiarios/7/medicacoes')
+            assert.deepEqual(JSON.parse(post.body), { nomeMedicamento: 'Medicação de teste', dosagem: null, horarioPrevisto: null })
+            assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('daiji_personalizacao:7')).diabetes), 'sim')
+            await preencherCheckin(page)
+            assert.equal(await page.locator('#glicemiaQuestion').isVisible(), true)
+            await page.locator('#glicemiaInput').fill('110')
+            await page.locator('[data-group="medicaoGlicemia"] [data-val]').first().click()
+            assert.equal(await page.locator('#ciSubmit').isEnabled(), true)
+            await page.locator('#ciSubmit').click()
+            await page.waitForFunction(() => document.querySelector('#ciSuccess p').textContent.includes('score foi atualizado'))
+            const body = JSON.parse(calls.find(c => c.path.endsWith('/checkins')).body)
+            assert.ok(body.respostaTexto.includes('Glicemia: 110'))
+        }, call => call.path.endsWith('/medicacoes') ? { status: call.method === 'POST' ? 201 : 200, data: [] }
+            : { status: call.method === 'POST' ? 201 : 200, data: score }, true)
+        await scenario('Personalização repetida não duplica medicação existente', async (page, calls) => {
+            await page.goto(origin + '/app/personalizacao.html')
+            await page.locator('#medicacao').fill('Medicação de teste')
+            await page.locator('[type="submit"]').click()
+            await page.waitForURL('**/score.html')
+            assert.equal(calls.filter(c => c.method === 'POST').length, 0)
+        }, call => ({ data: call.path.endsWith('/medicacoes')
+            ? [{ idMedicacao: 1, idBeneficiario: 7, nomeMedicamento: 'Medicação de teste' }] : score }), true)
+        await scenario('Falha da medicação preserva formulário e não simula sucesso', async page => {
+            await page.goto(origin + '/app/personalizacao.html')
+            await page.locator('#medicacao').fill('Medicação de teste')
+            await page.locator('[type="submit"]').click()
+            await page.waitForFunction(() => document.querySelector('#personalizacaoMessage').textContent.includes('Não foi possível'))
+            assert.ok(page.url().endsWith('personalizacao.html'))
+            assert.equal(await page.locator('#medicacao').inputValue(), 'Medicação de teste')
+        }, call => ({ status: call.method === 'POST' ? 503 : 200, data: [] }), true)
+        await scenario('Preferências e nome da comunidade não herdam conta do protótipo', async page => {
+            await page.goto(origin + '/app/score.html')
+            await page.evaluate(() => {
+                localStorage.setItem('daiji_diabetes','sim')
+                localStorage.setItem('daiji_personalizacao:99', JSON.stringify({ diabetes: 'sim' }))
+                localStorage.setItem('daiji_usuario', JSON.stringify({ nome: 'Outra Pessoa' }))
+            })
+            await page.reload()
+            await preencherCheckin(page)
+            assert.equal(await page.locator('#glicemiaQuestion').isVisible(), false)
+            assert.equal(await page.locator('#ciSubmit').isEnabled(), true)
+            await page.goto(origin + '/app/comunidade.html')
+            assert.ok((await page.locator('body').textContent()).includes(usuario.nome))
+            assert.ok(!(await page.locator('body').textContent()).includes('Outra Pessoa'))
+        }, () => ({ data: score }), true)
         console.log(`PASS: ${total} cenários de navegador + sintaxe e configuração. API inteiramente simulada.`)
     } finally {
         if (browser) await browser.close()

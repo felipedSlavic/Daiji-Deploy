@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(properties = {"telegram.bot.enabled=false", "gemini.enabled=false",
-        "CORS_ALLOWED_ORIGINS=https://app.example.test", "PORT=18081"})
+        "CORS_ALLOWED_ORIGINS=https://daiji-deploy.vercel.app", "PORT=18081"})
 @AutoConfigureMockMvc
 class ConfiguredCorsApiTest {
     @Autowired MockMvc mvc;
@@ -24,17 +24,17 @@ class ConfiguredCorsApiTest {
     @MockitoBean ConnectionFactory factory;
 
     @Test void origemConfiguradaPermitePatch() throws Exception {
-        mvc.perform(options("/api/gestao/encaminhamentos/1").header("Origin", "https://app.example.test")
+        mvc.perform(options("/api/gestao/encaminhamentos/1").header("Origin", "https://daiji-deploy.vercel.app")
                 .header("Access-Control-Request-Method", "PATCH")
                 .header("Access-Control-Request-Headers", "content-type"))
                 .andExpect(status().isOk())
-                .andExpect(header().string("Access-Control-Allow-Origin", "https://app.example.test"));
+                .andExpect(header().string("Access-Control-Allow-Origin", "https://daiji-deploy.vercel.app"));
         verifyNoInteractions(factory);
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"http://localhost:5500", "http://127.0.0.1:5500",
-            "http://localhost:5501", "http://127.0.0.1:5501", "https://app.example.test.nao-autorizado.example"})
+            "http://localhost:5501", "http://127.0.0.1:5501", "https://daiji-deploy.vercel.app.nao-autorizado.example"})
     void configuracaoSubstituiOrigensLocaisSemAceitarOutroHost(String origin) throws Exception {
         mvc.perform(options("/api/auth/login").header("Origin", origin)
                 .header("Access-Control-Request-Method", "POST"))

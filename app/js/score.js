@@ -1,4 +1,5 @@
 (function () {
+    if (!DaijiSession.validar()) return
 
     /* =====================================================
        CONFIGURAÇÕES
@@ -11,16 +12,13 @@
     let points =
         1250
 
-    let healthScore =
-        74
-
-
-    const temDiabetes =
-        localStorage.getItem(
-            'daiji_diabetes'
-        ) ===
-        'sim'
-
+    let checkinEmAndamento = false
+    let contextoBeneficiarioInvalidado = false
+    const idBeneficiarioPagina = DaijiSession.obterIdBeneficiario()
+    let temDiabetes = false
+    try {
+        temDiabetes = JSON.parse(localStorage.getItem('daiji_personalizacao:' + idBeneficiarioPagina) || 'null')?.diabetes === 'sim'
+    } catch { /* Preferência visual ausente. */ }
 
     const answers = {
 
@@ -176,11 +174,6 @@
                 'scoreArc'
             )
 
-        const scoreValueEl =
-            document.getElementById(
-                'scoreValue'
-            )
-
 
         if (!arc) {
 
@@ -199,19 +192,14 @@
             radius
 
 
-        const finalScore =
-            typeof score ===
-                'number' ?
-                score :
-                healthScore
-
-
         arc.style.strokeDasharray =
             circumference
 
 
         arc.style.strokeDashoffset =
             circumference
+
+        arc.style.visibility = 'visible'
 
 
         requestAnimationFrame(
@@ -224,7 +212,7 @@
                             circumference *
                             (
                                 1 -
-                                finalScore / 100
+                                score / 100
                             )
 
                     },
@@ -234,192 +222,83 @@
             }
         )
 
-
-        if (scoreValueEl) {
-
-            scoreValueEl.textContent =
-                finalScore
-
-        }
-
     }
 
 
-    /* =====================================================
-       CÁLCULO DO SCORE DE SAÚDE A PARTIR DO CHECK-IN
-    ====================================================== */
+    async function carregarScore(preservarAtual = false, beneficiarioEsperado = null) {
+        const valor = document.getElementById('scoreValue')
+        const classificacao = document.querySelector('.score-content h2')
+        const atualizacao = document.getElementById('scoreUpdate')
+        const arc = document.getElementById('scoreArc')
 
-    function calcHealthScore() {
-
-        let delta =
-            0
-
-
-        const sonoPontos = {
-
-            'Péssimo': -6,
-
-            'Regular': -1,
-
-            'Bom': 3,
-
-            'Ótimo': 5
-
+        function mostrarEstado(titulo, mensagem) {
+            if (preservarAtual) return
+            valor.textContent = '—'
+            arc.style.visibility = 'hidden'
+            classificacao.textContent = titulo
+            atualizacao.textContent = mensagem
         }
 
-        delta +=
-            sonoPontos[
-                answers.sono
-            ] ||
-            0
+        mostrarEstado('Carregando score...', 'Consultando seu score.')
 
+        const idBeneficiario = DaijiSession.obterIdBeneficiario()
+        if (idBeneficiario === null) {
+            mostrarEstado('Identificação necessária', 'Faça login com uma conta de beneficiário para consultar seu score.')
+            return false
+        }
 
-        // duração do sono
-        const horas =
-            answers.horasSono
+        if (beneficiarioEsperado !== null && idBeneficiario !== beneficiarioEsperado) return false
+        if (!validarContextoBeneficiario()) return false
 
-        if (typeof horas === 'number') {
+        let resposta
+        try {
+            resposta = await DaijiHttp.request(`/api/beneficiarios/${idBeneficiario}/score`)
+        } catch (erro) {
+            mostrarEstado('Score indisponível', DaijiHttp.isTimeout(erro)
+                ? 'O servidor demorou para responder. Recarregue a página para tentar novamente.'
+                : 'Não foi possível conectar ao serviço. Tente novamente mais tarde.')
+            return false
+        }
 
-            if (horas >= 7 && horas <= 9) {
-                delta += 3
-            } else if (horas < 5) {
-                delta -= 4
-            } else if (horas < 7) {
-                delta -= 1
-            } else {
-                delta -= 1
+        if (resposta.status === 404) {
+            mostrarEstado('Score ainda não calculado', 'Seu score estará disponível após o primeiro cálculo.')
+            return false
+        }
+        if (resposta.status === 400) {
+            mostrarEstado('Identificação inválida', 'Não foi possível identificar o beneficiário. Faça login novamente.')
+            return false
+        }
+        if (resposta.status !== 200) {
+            mostrarEstado('Score indisponível', 'Não foi possível consultar seu score. Tente novamente mais tarde.')
+            return false
+        }
+
+        try {
+            const dados = await resposta.json()
+            const riscos = { BAIXO: 'Risco Baixo', MEDIO: 'Risco Moderado', ALTO: 'Risco Alto' }
+            const data = new Date(dados?.dataCalculo)
+            if (!dados || dados.idBeneficiario !== idBeneficiario ||
+                typeof dados.valorScore !== 'number' || !Number.isFinite(dados.valorScore) ||
+                dados.valorScore < 0 || dados.valorScore > 100 ||
+                !Object.prototype.hasOwnProperty.call(riscos, dados.classificacaoRisco) ||
+                typeof dados.dataCalculo !== 'string' || Number.isNaN(data.getTime())) {
+                throw new Error('Resposta de score inválida')
             }
 
+            if (!validarContextoBeneficiario()) return false
+
+            valor.textContent = dados.valorScore.toLocaleString('pt-BR')
+            classificacao.textContent = riscos[dados.classificacaoRisco]
+            atualizacao.textContent = 'Atualizado em ' + data.toLocaleString('pt-BR', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            })
+            animateScore(dados.valorScore)
+            return true
+        } catch {
+            mostrarEstado('Score indisponível', 'Não foi possível carregar seu score. Tente novamente mais tarde.')
+            return false
         }
-
-
-        delta -=
-            (
-                Number(
-                    answers.estresse
-                ) ||
-                3
-            ) -
-            3
-
-
-        const dietaPontos = {
-
-            'Segui bem minha dieta': 4,
-
-            'Alguns excessos': 0,
-
-            'Não me alimentei bem': -4
-
-        }
-
-        delta +=
-            dietaPontos[
-                answers.dieta
-            ] ||
-            0
-
-
-        const remedioPontos = {
-
-            'Sim, todos': 4,
-
-            'Esqueci um ou dois': -1,
-
-            'Não tomei hoje': -5
-
-        }
-
-        delta +=
-            remedioPontos[
-                answers.remedio
-            ] ||
-            0
-
-
-        if (
-            answers.passos !==
-                null &&
-            answers.passos >=
-                6000
-        ) {
-
-            delta +=
-                3
-
-        }
-
-
-        if (
-            answers.agua !==
-                null &&
-            answers.agua >=
-                6
-        ) {
-
-            delta +=
-                2
-
-        }
-
-
-        if (
-            answers.paSis &&
-            answers.paDia &&
-            (
-                answers.paSis >
-                    140 ||
-                answers.paDia >
-                    90
-            )
-        ) {
-
-            delta -=
-                3
-
-        }
-
-
-        if (
-            temDiabetes &&
-            answers.glicemia
-        ) {
-
-            if (
-                answers.glicemia >
-                    180 ||
-                answers.glicemia <
-                    70
-            ) {
-
-                delta -=
-                    4
-
-            }
-
-            else {
-
-                delta +=
-                    2
-
-            }
-
-        }
-
-
-        const novoScore =
-            Math.max(
-                0,
-                Math.min(
-                    100,
-                    healthScore +
-                        delta
-                )
-            )
-
-
-        return novoScore
-
     }
 
 
@@ -575,8 +454,8 @@
 
 
         submit.disabled =
-            completed <
-            required.length
+            contextoBeneficiarioInvalidado || checkinEmAndamento || actionCard.classList.contains('done') ||
+            completed < required.length
 
 
         updatePtsDisplay()
@@ -1167,6 +1046,7 @@
     ====================================================== */
 
     function openModal() {
+        if (!validarContextoBeneficiario()) return
 
         modal.hidden =
             false
@@ -1184,6 +1064,7 @@
 
 
     function closeModal() {
+        if (checkinEmAndamento) return
 
         modal.hidden =
             true
@@ -1241,30 +1122,156 @@
        CONCLUI CHECK-IN
     ====================================================== */
 
-    submit.addEventListener(
-        'click',
-        () => {
+    let mensagemConclusao = 'Check-in concluído · +50 pts'
+    const mensagemSucesso = document.querySelector('#ciSuccess p')
+    mensagemSucesso.setAttribute('role', 'status')
+    mensagemSucesso.setAttribute('aria-live', 'polite')
+    const botaoVoltarScore = document.getElementById('ciDone')
+    const mensagemCheckin = document.querySelector('.checkin-top p')
+    mensagemCheckin.setAttribute('role', 'status')
+    mensagemCheckin.setAttribute('aria-live', 'polite')
 
-            if (
-                submit.disabled
-            ) {
+    function obterBeneficiarioCheckin() {
+        return DaijiSession.obterIdBeneficiario()
+    }
 
+    function dataLocalCheckin() {
+        const agora = new Date()
+        return agora.getFullYear() + '-' +
+            String(agora.getMonth() + 1).padStart(2, '0') + '-' +
+            String(agora.getDate()).padStart(2, '0')
+    }
+
+    function validarContextoBeneficiario() {
+        if (!DaijiSession.validar()) return false
+        const idAtual = obterBeneficiarioCheckin()
+        if (!contextoBeneficiarioInvalidado && idBeneficiarioPagina !== null &&
+            idAtual === idBeneficiarioPagina) return true
+
+        contextoBeneficiarioInvalidado = true
+        const aviso = 'A sessão foi alterada ou está indisponível. Atualize ou reabra a página para continuar.'
+        mensagemCheckin.textContent = aviso
+        actionSub.textContent = aviso
+        actionCard.disabled = true
+        updateProgress()
+        return false
+    }
+
+    window.addEventListener('storage', event => {
+        if (event.storageArea === localStorage &&
+            (event.key === 'daijiSession' || event.key === 'idBeneficiario' || event.key === null)) {
+            validarContextoBeneficiario()
+        }
+    })
+
+    submit.addEventListener('click', async () => {
+        if (!validarContextoBeneficiario()) return
+        if (checkinEmAndamento || actionCard.classList.contains('done')) return
+
+        const nivelEstresse = Number(answers.estresse)
+        // Converte somente o payload; mantém os rótulos e as respostas visuais.
+        const qualidadeSono = {
+            'Péssimo': 'RUIM', 'Regular': 'REGULAR', 'Bom': 'BOM', 'Ótimo': 'BOM'
+        }[answers.sono]
+        const qualidadeAlimentacao = {
+            'Segui bem minha dieta': 'BOA', 'Alguns excessos': 'REGULAR', 'Não me alimentei bem': 'RUIM'
+        }[answers.dieta]
+        const respostaTexto = [
+            'Sono: ' + answers.horasSono + 'h (' + answers.sonoModo + ')',
+            answers.sonoModo === 'intervalo' ? 'Dormiu: ' + answers.dormiu + '; acordou: ' + answers.acordou : null,
+            'Passos: ' + answers.passos,
+            'Água: ' + answers.agua + ' copos',
+            answers.paSis && answers.paDia ? 'Pressão: ' + answers.paSis + '/' + answers.paDia : null,
+            temDiabetes ? 'Glicemia: ' + answers.glicemia + ' mg/dL; ' + answers.medicaoGlicemia : null,
+            answers.remedio ? 'Medicação: ' + answers.remedio : null
+        ].filter(Boolean).join(' | ')
+        const encoder = new TextEncoder()
+        if (!required.every(key => answers[key] !== null && answers[key] !== '') ||
+            answers.horasSono === null || !Number.isFinite(answers.horasSono) ||
+            [...flow.querySelectorAll('input')].some(input => !input.closest('[hidden]') && !input.checkValidity()) ||
+            typeof qualidadeSono !== 'string' || typeof qualidadeAlimentacao !== 'string' ||
+            !Number.isInteger(nivelEstresse) || nivelEstresse < 1 || nivelEstresse > 5 ||
+            encoder.encode(answers.sono).length > 20 ||
+            encoder.encode(answers.dieta).length > 30 ||
+            encoder.encode(respostaTexto).length > 500) {
+            mensagemCheckin.textContent = 'Responda todas as perguntas obrigatórias com valores válidos.'
+            return
+        }
+
+        // O destino permanece vinculado à página, nunca a um novo usuário no storage.
+        const idBeneficiario = idBeneficiarioPagina
+
+        const dados = {
+            nivelEstresse,
+            qualidadeSono,
+            qualidadeAlimentacao,
+            humor: null,
+            respostaTexto: respostaTexto || null
+        }
+        const data = dataLocalCheckin()
+        checkinEmAndamento = true
+        updateProgress()
+        mensagemCheckin.textContent = 'Enviando seu check-in...'
+        submit.setAttribute('aria-busy', 'true')
+
+        try {
+            let resposta
+            try {
+                resposta = await DaijiHttp.request(`/api/beneficiarios/${idBeneficiario}/checkins`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dados)
+                }, false)
+            } catch (erro) {
+                mensagemCheckin.textContent = DaijiHttp.isTimeout(erro)
+                    ? 'Não foi possível confirmar o check-in a tempo. Ele pode ter sido registrado; uma nova tentativa pode duplicá-lo.'
+                    : 'Serviço indisponível. Verifique a conexão e tente novamente.'
                 return
-
             }
 
+            if (resposta.status !== 201) {
+                mensagemCheckin.textContent = resposta.status === 400
+                    ? 'Dados inválidos. Confira suas respostas e tente novamente.'
+                    : resposta.status === 404
+                        ? 'Beneficiário não encontrado. Faça login novamente.'
+                        : 'Não foi possível registrar o check-in. Tente novamente mais tarde.'
+                return
+            }
 
-            flow.hidden =
-                true
-
-            success.hidden =
-                false
-
-
+            flow.hidden = true
+            success.hidden = false
             markDone()
+            saveState(idBeneficiario, data)
+            mensagemSucesso.textContent = 'Check-in registrado. Atualizando seu score...'
+            botaoVoltarScore.disabled = true
 
+            try {
+                if (!validarContextoBeneficiario()) throw new Error('Contexto de beneficiário alterado')
+                const recalculo = await DaijiHttp.request(`/api/beneficiarios/${idBeneficiario}/score/recalcular`, {
+                    method: 'POST'
+                }, false)
+                if (recalculo.status !== 201) throw new Error('Falha no recálculo')
+
+                // Aguarda a consulta inicial para que ela não sobrescreva o novo score.
+                await consultaInicialScore
+                const atualizado = await carregarScore(true, idBeneficiario)
+                if (!atualizado) throw new Error('Falha ao atualizar score')
+
+                mensagemConclusao = 'Check-in registrado e score atualizado · +50 pts'
+                mensagemSucesso.textContent = 'Seu check-in foi registrado e seu score foi atualizado.'
+            } catch {
+                mensagemConclusao = 'Check-in registrado, mas não foi possível atualizar o score neste momento.'
+                mensagemSucesso.textContent = mensagemConclusao
+            } finally {
+                botaoVoltarScore.disabled = false
+            }
+            showToast(mensagemConclusao)
+        } finally {
+            checkinEmAndamento = false
+            submit.removeAttribute('aria-busy')
+            updateProgress()
         }
-    )
+    })
 
 
     function markDone() {
@@ -1289,15 +1296,6 @@
 
             points +=
                 ganhos
-
-
-            healthScore =
-                calcHealthScore()
-
-
-            animateScore(
-                healthScore
-            )
 
 
             const successPts =
@@ -1345,7 +1343,6 @@
             )
 
 
-        saveState()
 
     }
 
@@ -1354,116 +1351,40 @@
        LOCAL STORAGE
     ====================================================== */
 
-    function saveState() {
-
+    function saveState(idBeneficiario, data) {
         try {
-
-            localStorage.setItem(
-
-                STORE_KEY,
-
-                JSON.stringify({
-
-                    done:
-                        true,
-
-                    answers:
-                        answers,
-
-                    points:
-                        points,
-
-                    healthScore:
-                        healthScore
-
-                })
-
-            )
-
+            // Apenas cache visual de um POST confirmado; não é histórico oficial.
+            localStorage.setItem(STORE_KEY + ':' + idBeneficiario, JSON.stringify({
+                idBeneficiario,
+                data,
+                done: true,
+                points
+            }))
+        } catch {
+            // Falha no cache não desfaz o check-in confirmado pelo servidor.
         }
-
-        catch (error) {
-
-            console.log(
-                'Não foi possível salvar o check-in'
-            )
-
-        }
-
     }
 
-
     function restoreState() {
+        const idBeneficiario = idBeneficiarioPagina
+        if (!idBeneficiario) return
 
         try {
+            // A chave antiga, sem identificação e data, não é consultada.
+            const saved = JSON.parse(localStorage.getItem(STORE_KEY + ':' + idBeneficiario) || 'null')
+            if (!saved || saved.done !== true || saved.idBeneficiario !== idBeneficiario ||
+                saved.data !== dataLocalCheckin()) return
 
-            const saved =
-                JSON.parse(
-                    localStorage.getItem(
-                        STORE_KEY
-                    ) ||
-                    'null'
-                )
-
-
-            if (
-                saved &&
-                saved.done
-            ) {
-
-                points =
-                    saved.points ||
-                    1300
-
-
-                healthScore =
-                    saved.healthScore ||
-                    healthScore
-
-
-                ptsNum.textContent =
-                    formatPoints(
-                        points
-                    )
-
-
-                actionCard
-                    .classList
-                    .add(
-                        'done'
-                    )
-
-
-                actionTitle.textContent =
-                    'Check-in concluído'
-
-
-                actionSub.textContent =
-                    'Muito bem! Volte amanhã · +50 pts ganhos'
-
-
-                actionIc.innerHTML =
-                    '<i class="bi bi-check-lg"></i>'
-
-
-                today
-                    .classList
-                    .add(
-                        'checked'
-                    )
-
-            }
-
+            points = Number.isFinite(saved.points) ? saved.points : 1300 // Pontos demonstrativos.
+            ptsNum.textContent = formatPoints(points)
+            actionCard.classList.add('done')
+            actionTitle.textContent = 'Check-in concluído'
+            actionSub.textContent = 'Muito bem! Volte amanhã · +50 pts ganhos'
+            actionIc.innerHTML = '<i class="bi bi-check-lg"></i>'
+            today.classList.add('checked')
+        } catch {
+            // Cache ausente ou inválido não comprova conclusão.
         }
-
-        catch (error) {
-
-            console.log(
-                'Não foi possível restaurar o check-in'
-            )
-
-        }
-
     }
 
 
@@ -1479,11 +1400,9 @@
             'click',
             () => {
 
+                if (checkinEmAndamento) return
                 closeModal()
-
-                showToast(
-                    'Check-in concluído · +50 pts'
-                )
+                showToast(mensagemConclusao)
 
             }
         )
@@ -1539,7 +1458,7 @@
 
     restoreState()
 
-    animateScore()
+    const consultaInicialScore = carregarScore()
 
     updateProgress()
 

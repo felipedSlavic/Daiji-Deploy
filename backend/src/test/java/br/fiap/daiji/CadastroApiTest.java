@@ -26,6 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class CadastroApiTest {
     @Autowired MockMvc mvc;
     @Autowired ObjectMapper mapper;
+    @Autowired br.fiap.daiji.service.BeneficiarioService beneficiarios;
+    @Autowired br.fiap.daiji.assistant.BeneficiaryJourney journey;
     @MockitoBean ConnectionFactory factory;
     static final String DB="jdbc:h2:mem:cp10;MODE=Oracle;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=10000";
     // Apenas fixture H2 em memória, transcrita do script oficial completo; não é migration.
@@ -112,6 +114,55 @@ class CadastroApiTest {
         cadastrar(request().put("idEmpresa",999)).andExpect(status().isBadRequest())
                 .andExpect(content().json("{\"mensagem\":\"Empresa informada não encontrada.\"}",true));
         assertEquals(0,contar("BENEFICIARIO")); assertEquals(0,contar("AUTENTICACAO"));
+    }
+    @Test void cadastroLoginCheckinScoreETelegramUsamMesmoBeneficiario() throws Exception {
+        cadastrar(request()).andExpect(status().isCreated());
+        var novo = request().put("cpf", "12345678909").put("email", "novo@example.com");
+        var resposta = cadastrar(novo).andExpect(status().isCreated()).andReturn().getResponse().getContentAsString();
+        int id = mapper.readTree(resposta).get("idBeneficiario").intValue();
+        assertNotEquals(1, id);
+        assertEquals(id, beneficiarios.buscarPorEmail("  NOVO@example.com ").orElseThrow().getId());
+        mvc.perform(post("/api/auth/login").contentType("application/json")
+                .content("{\"email\":\"novo@example.com\",\"senha\":\"SenhaExemplo@123\"}"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.idBeneficiario").value(id));
+        cadastrar(novo).andExpect(status().isConflict());
+        assertEquals(2, contar("BENEFICIARIO"));
+        // Estruturas exclusivamente H2 para exercitar o fluxo completo, sem alterar Oracle.
+        sql("CREATE TABLE CHECKIN (id_checkin NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, "
+                + "id_beneficiario NUMBER REFERENCES BENEFICIARIO(id_beneficiario), data_checkin TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+                + "canal VARCHAR2(20), nivel_estresse NUMBER, qualidade_sono VARCHAR2(20), qualidade_alimentacao VARCHAR2(30), "
+                + "humor VARCHAR2(20), resposta_texto VARCHAR2(500))");
+        sql("CREATE TABLE MEDICACAO (id_medicacao NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, "
+                + "id_beneficiario NUMBER REFERENCES BENEFICIARIO(id_beneficiario), nome_medicamento VARCHAR2(100), dosagem VARCHAR2(50), horario_previsto VARCHAR2(5))");
+        sql("CREATE TABLE CONFIRMACAO_MEDICACAO (id_medicacao NUMBER, status_confirmacao VARCHAR2(15))");
+        sql("CREATE TABLE COMORBIDADE (id_comorbidade NUMBER, descricao VARCHAR2(100))");
+        sql("CREATE TABLE BENEFICIARIO_COMORBIDADE (id_beneficiario NUMBER, id_comorbidade NUMBER)");
+        sql("CREATE TABLE SCORE_RISCO_RENAL (id_score NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY, "
+                + "id_beneficiario NUMBER REFERENCES BENEFICIARIO(id_beneficiario), data_calculo TIMESTAMP, valor_score NUMBER(5,2), classificacao_risco VARCHAR2(10))");
+        String base = "/api/beneficiarios/" + id;
+        mvc.perform(post(base + "/medicacoes").contentType("application/json")
+                .content("{\"nomeMedicamento\":\"Medicação de teste\",\"dosagem\":null,\"horarioPrevisto\":null}"))
+                .andExpect(status().isCreated()).andExpect(jsonPath("$.idBeneficiario").value(id));
+        mvc.perform(get(base + "/score")).andExpect(status().isNotFound());
+        mvc.perform(post(base + "/checkins").contentType("application/json")
+                .content("{\"nivelEstresse\":5,\"qualidadeSono\":\"RUIM\",\"qualidadeAlimentacao\":\"RUIM\",\"humor\":null,\"respostaTexto\":\"Passos: 0\"}"))
+                .andExpect(status().isCreated()).andExpect(jsonPath("$.idBeneficiario").value(id))
+                .andExpect(jsonPath("$.canal").value("APP"));
+        mvc.perform(post(base + "/score/recalcular")).andExpect(status().isCreated())
+                .andExpect(jsonPath("$.idBeneficiario").value(id)).andExpect(jsonPath("$.valorScore").value(85));
+        mvc.perform(get(base + "/score")).andExpect(status().isOk()).andExpect(jsonPath("$.valorScore").value(85));
+        var scoreTelegram = assertInstanceOf(br.fiap.daiji.assistant.AssistantResponse.Score.class,
+                journey.route(881, "/score novo@example.com"));
+        assertEquals(85, scoreTelegram.valor().intValue());
+        assertEquals(new br.fiap.daiji.assistant.AssistantResponse.Text(br.fiap.daiji.assistant.CheckinConversations.START),
+                journey.route(881, "/checkin NOVO@example.com"));
+        for (String texto : List.of("3", "BOA", "BOA", "CALMO", "PULAR", "CONFIRMAR")) journey.route(881, texto);
+        try (var c = DriverManager.getConnection(DB); var s = c.createStatement();
+             var rs = s.executeQuery("SELECT id_beneficiario, canal FROM CHECKIN ORDER BY id_checkin")) {
+            assertTrue(rs.next()); assertEquals(id, rs.getInt(1)); assertEquals("APP", rs.getString(2));
+            assertTrue(rs.next()); assertEquals(id, rs.getInt(1)); assertEquals("TELEGRAM", rs.getString(2));
+            assertFalse(rs.next());
+        }
     }
     static Stream<Arguments> invalidos() {
         return Stream.of(

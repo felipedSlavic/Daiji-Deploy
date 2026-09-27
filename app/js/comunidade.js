@@ -9,7 +9,7 @@
     /* usuário logado (salvo no login/cadastro) */
     function usuarioLogado() {
         try {
-            const u = JSON.parse(localStorage.getItem('daiji_usuario') || 'null')
+            const u = DaijiSession.obterUsuario()
             if (u && u.nome) return u.nome.trim()
         } catch (e) { /* sem localStorage */ }
         return 'Você'

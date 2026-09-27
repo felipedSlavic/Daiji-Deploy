@@ -66,7 +66,6 @@
     <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
 
 
-    <script src="js/session.js" data-private></script>
     <script src="js/theme.js"></script>
 
 
@@ -135,8 +134,8 @@
                     class="search-input"
                     id="busca"
                     name="busca"
-                    placeholder="Buscar especialidade"
-                    aria-label="Buscar especialidade"
+                    placeholder="Buscar médico ou especialidade"
+                    aria-label="Buscar médico ou especialidade"
                 >
 
 
@@ -176,7 +175,7 @@
 
                 <!-- PSICOLOGIA -->
 
-                <article class="trend-card">
+                <article class="trend-card" data-specialty="saude-mental">
 
                     <svg
                         viewBox="0 0 300 200"
@@ -211,7 +210,7 @@
                     </div>
 
 
-                    <a href="agendar.html" class="btn-agendar">
+                    <a href="agendar.html?especialidade=saude-mental" class="btn-agendar">
 
                         Agendar
 
@@ -225,7 +224,7 @@
 
                 <!-- NUTRICIONISTA -->
 
-                <article class="trend-card">
+                <article class="trend-card" data-specialty="nutricao">
 
                     <svg
                         viewBox="0 0 300 200"
@@ -260,7 +259,7 @@
                     </div>
 
 
-                    <a href="agendar.html" class="btn-agendar">
+                    <a href="agendar.html?especialidade=nutricao" class="btn-agendar">
 
                         Agendar
 
@@ -274,7 +273,7 @@
 
                 <!-- CLÍNICO GERAL -->
 
-                <article class="trend-card">
+                <article class="trend-card" data-specialty="clinico-geral">
 
                     <svg
                         viewBox="0 0 300 200"
@@ -309,7 +308,7 @@
                     </div>
 
 
-                    <a href="agendar.html" class="btn-agendar">
+                    <a href="agendar.html?especialidade=clinico-geral" class="btn-agendar">
 
                         Agendar
 
@@ -323,7 +322,7 @@
 
                 <!-- CARDIOLOGISTA -->
 
-                <article class="trend-card">
+                <article class="trend-card" data-specialty="cardiaca">
 
                     <svg
                         viewBox="0 0 300 200"
@@ -358,7 +357,7 @@
                     </div>
 
 
-                    <a href="agendar.html" class="btn-agendar">
+                    <a href="agendar.html?especialidade=cardiaca" class="btn-agendar">
 
                         Agendar
 
@@ -417,6 +416,31 @@
                         <span class="category-label">
 
                             Todos
+
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- CLÍNICO GERAL -->
+
+                    <button
+                        type="button"
+                        class="category-item"
+                        data-category="clinico-geral"
+                        aria-pressed="false"
+                    >
+
+                        <span class="category-icon">
+
+                            <i class="bi bi-clipboard2-pulse"></i>
+
+                        </span>
+
+                        <span class="category-label">
+
+                            Clínico Geral
 
                         </span>
 
@@ -612,64 +636,30 @@
             <section>
 
 
-                <h2 class="section-title">
+                <div class="doctors-heading">
 
-                    Próximos de você
+                    <h2 class="section-title">
+                        Próximos de você
+                    </h2>
 
-                </h2>
+                    <span class="doctors-count" id="doctorsCount"></span>
 
-
-                <article class="doctor-card">
-
-
-                    <div class="doctor-avatar doctor-avatar-icon">
-
-                        <i class="bi bi-person-fill"></i>
-
-                    </div>
+                </div>
 
 
-                    <div class="doctor-info">
+                <!-- lista gerada por js/descobrir.js a partir de js/medicos.js -->
+                <div class="doctors-list" id="doctorsList"></div>
 
 
-                        <h5>
-
-                            Dra. Juliana Martins
-
-                        </h5>
-
-
-                        <p class="doc-sub">
-
-                            Clínico Geral • CRM 123456
-
-                        </p>
-
-
-                        <p class="doc-rating">
-
-                            <i class="bi bi-star-fill"></i>
-
-                            4.9 (128 avaliações)
-
-                        </p>
-
-
-                    </div>
-
-
-                    <button
-                        type="button"
-                        class="heart-btn"
-                        aria-label="Favoritar Dra. Juliana Martins"
-                    >
-
-                        <i class="bi bi-heart"></i>
-
-                    </button>
-
-
-                </article>
+                <button
+                    type="button"
+                    class="doctors-more"
+                    id="doctorsMore"
+                    hidden
+                >
+                    Ver todos os médicos
+                    <i class="bi bi-chevron-down"></i>
+                </button>
 
 
             </section>
@@ -691,6 +681,7 @@
 
 
     <!-- JavaScript da página -->
+    <script src="js/medicos.js"></script>
     <script src="js/descobrir.js"></script>
 
 

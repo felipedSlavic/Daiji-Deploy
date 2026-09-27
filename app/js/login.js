@@ -1,192 +1,88 @@
-document.addEventListener('DOMContentLoaded', function () {
+const formularioLogin = document.querySelector('#loginForm')
 
-    // =====================================================
-    // ELEMENTOS
-    // =====================================================
-
-    const loginForm =
-        document.querySelector('#loginForm')
-
-    const campoEmail =
-        document.querySelector('#email')
-
-    const campoSenha =
-        document.querySelector('#senha')
-
-    const lembrar =
-        document.querySelector('#lembrar')
-
-    const loginMessage =
-        document.querySelector('#loginMessage')
-
-    const togglePassword =
-        document.querySelector('#togglePassword')
-
-    const passwordIcon =
-        document.querySelector('#passwordIcon')
+const mensagemLogin = document.querySelector('#loginMessage')
 
 
-    // =====================================================
-    // MOSTRAR / OCULTAR SENHA
-    // =====================================================
+formularioLogin.addEventListener('submit', function (event) {
 
-    if (togglePassword && campoSenha) {
-
-        togglePassword.addEventListener(
-            'click',
-            function () {
-
-                const visivel =
-                    campoSenha.type === 'text'
+    event.preventDefault()
 
 
-                campoSenha.type =
-                    visivel
-                        ? 'password'
-                        : 'text'
+    if (!formularioLogin.checkValidity()) {
 
+        formularioLogin.reportValidity()
 
-                togglePassword.setAttribute(
-                    'aria-label',
-                    visivel
-                        ? 'Mostrar senha'
-                        : 'Ocultar senha'
-                )
-
-
-                if (passwordIcon) {
-
-                    passwordIcon.classList.toggle(
-                        'bi-eye',
-                        visivel
-                    )
-
-                    passwordIcon.classList.toggle(
-                        'bi-eye-slash',
-                        !visivel
-                    )
-
-                }
-
-            }
-        )
-
-    }
-
-
-    // =====================================================
-    // LOGIN
-    // =====================================================
-
-    if (!loginForm) {
         return
+
+    }
+
+
+    if (mensagemLogin) {
+
+        mensagemLogin.textContent = 'Entrando...'
+
     }
 
 
-    let emAndamento = false
-    const botaoEntrar = loginForm.querySelector('[type="submit"]')
-    loginMessage?.setAttribute('role', 'status')
-    loginMessage?.setAttribute('aria-live', 'polite')
+    // marca que a pessoa está logada na Daiji (portão de acesso do Dr.Online)
+    try {
+        localStorage.setItem('daijiLogado', 'true')
 
-    loginForm.addEventListener('submit', async function (event) {
-        event.preventDefault()
-        if (emAndamento) return
-        if (!loginForm.checkValidity()) {
-            loginForm.reportValidity()
-            return
-        }
-        const email = campoEmail.value.trim()
-        const senha = campoSenha.value // A senha deve chegar sem transformações ao backend.
-        if (!email || !senha) {
-            mostrarMensagem('Informe seu e-mail e sua senha.', 'erro')
-            return
-        }
-        emAndamento = true
-        botaoEntrar.disabled = true
-        mostrarMensagem('Entrando...', '')
-        let sucesso = false
-        try {
-            const resposta = await DaijiHttp.request('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, senha })
-            })
-            if (resposta.status === 401) {
-                mostrarMensagem('E-mail ou senha inválidos.', 'erro')
-                return
-            }
-            if (resposta.status !== 200) {
-                mostrarMensagem('Não foi possível entrar. Tente novamente mais tarde.', 'erro')
-                return
-            }
-            let usuario
-            try { usuario = await resposta.json() } catch {
-                mostrarMensagem('O serviço retornou uma resposta inválida.', 'erro')
-                return
-            }
-            try { DaijiSession.criarSessao(usuario, lembrar?.checked === true) } catch {
-                mostrarMensagem('Não foi possível iniciar a sessão. Confira a resposta do serviço e o armazenamento do navegador.', 'erro')
-                return
-            }
-            sucesso = true
-            campoSenha.value = ''
-            mostrarMensagem('Login realizado com sucesso.', 'sucesso')
-            setTimeout(() => { window.location.href = 'score.html' }, 400)
-        } catch (erro) {
-            mostrarMensagem(DaijiHttp.isTimeout(erro)
-                ? 'O servidor demorou para responder. Tente novamente.'
-                : 'Não foi possível conectar ao serviço. Tente novamente mais tarde.', 'erro')
-        } finally {
-            if (!sucesso) {
-                emAndamento = false
-                botaoEntrar.disabled = false
-            }
-        }
-    })
+        // identifica o usuário logado: usa o nome do cadastro feito
+        // com este e-mail; se não houver, monta a partir do e-mail
+        const email = document.querySelector('#email').value.trim().toLowerCase()
+        const contas = JSON.parse(localStorage.getItem('daiji_contas') || '{}')
 
-    // =====================================================
-    // MENSAGEM
-    // =====================================================
+        const nomeDoEmail = email
+            .split('@')[0]
+            .split(/[._-]+/)
+            .filter(Boolean)
+            .map(p => p.charAt(0).toUpperCase() + p.slice(1))
+            .join(' ')
 
-    function mostrarMensagem(
-        texto,
-        tipo
-    ) {
-
-        if (!loginMessage) {
-            return
-        }
-
-
-        loginMessage.textContent =
-            texto
-
-
-        loginMessage.classList.remove(
-            'error',
-            'success',
-            'erro',
-            'sucesso'
-        )
-
-
-        if (tipo === 'erro') {
-
-            loginMessage.classList.add(
-                'error'
-            )
-
-        }
-
-
-        if (tipo === 'sucesso') {
-
-            loginMessage.classList.add(
-                'success'
-            )
-
-        }
-
+        localStorage.setItem('daiji_usuario', JSON.stringify({
+            nome: contas[email] || nomeDoEmail || 'Você',
+            email: email
+        }))
+    } catch (erro) {
+        // ambiente sem localStorage (aba privada, etc.) — segue mesmo assim
     }
+
+
+    // se a pessoa foi mandada para cá por um botão que exige login
+    // (ex.: Dr.Online), volta para o destino original depois de entrar
+    const redirect =
+        new URLSearchParams(window.location.search).get('redirect')
+
+
+    window.location.href = redirect ? redirect : 'score.html'
 
 })
+
+
+// ---------- Mostrar / ocultar senha ----------
+const togglePassword = document.querySelector('#togglePassword')
+const campoSenhaLogin = document.querySelector('#senha')
+const passwordIcon = document.querySelector('#passwordIcon')
+
+if (togglePassword && campoSenhaLogin) {
+
+    togglePassword.addEventListener('click', function () {
+
+        const visivel = campoSenhaLogin.type === 'text'
+
+        campoSenhaLogin.type = visivel ? 'password' : 'text'
+
+        togglePassword.setAttribute(
+            'aria-label',
+            visivel ? 'Mostrar senha' : 'Ocultar senha'
+        )
+
+        if (passwordIcon) {
+            passwordIcon.classList.toggle('bi-eye', visivel)
+            passwordIcon.classList.toggle('bi-eye-slash', !visivel)
+        }
+
+    })
+
+}

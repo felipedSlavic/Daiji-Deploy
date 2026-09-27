@@ -1,0 +1,1871 @@
+.tele-page {
+
+    --tele-green:
+        var(--green, #42d69d);
+
+    --tele-bg:
+        var(--bg, #07100c);
+
+    --tele-text:
+        var(--text, #f4f7f5);
+
+    --tele-muted:
+        var(--muted, #91a39a);
+
+    --tele-border:
+        rgba(255, 255, 255, 0.08);
+
+    overflow-x: hidden;
+
+}
+
+
+
+/* =========================================================
+   IMPORTANTE
+   REMOVE ALTURAS EXAGERADAS DO STYLE.CSS
+========================================================= */
+
+.tele-page main {
+
+    margin: 0;
+
+    padding: 0;
+
+}
+
+
+.tele-page main > section {
+
+    min-height: auto !important;
+
+}
+
+
+.tele-page main > .sec {
+
+    min-height: auto !important;
+
+    padding-top:
+        54px !important;
+
+    padding-bottom:
+        54px !important;
+
+}
+
+
+.tele-page .fx-in {
+
+    opacity: 1 !important;
+
+    transform:
+        none !important;
+
+}
+
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.tele-hero {
+
+    min-height: auto !important;
+
+    padding:
+        58px 0 56px;
+
+}
+
+
+.tele-hero-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.05fr)
+        minmax(420px, 0.95fr);
+
+    gap: 52px;
+
+    align-items: center;
+
+}
+
+
+
+/* =========================================================
+   TEXTO HERO
+========================================================= */
+
+.tele-copy {
+
+    position: relative;
+
+    z-index: 2;
+
+}
+
+
+.tele-back {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 12px;
+
+    transition:
+        color 0.2s ease;
+
+}
+
+
+.tele-back:hover {
+
+    color:
+        var(--tele-green);
+
+}
+
+
+.tele-plan-badge {
+
+    width: max-content;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 20px;
+
+    padding:
+        7px 11px;
+
+    border:
+        1px solid
+        rgba(66, 214, 157, 0.21);
+
+    border-radius:
+        999px;
+
+    color:
+        var(--tele-green);
+
+    background:
+        rgba(66, 214, 157, 0.06);
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing:
+        0.08em;
+
+}
+
+
+.tele-dot {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background:
+        var(--tele-green);
+
+    box-shadow:
+        0 0 12px
+        rgba(66, 214, 157, 0.62);
+
+}
+
+
+.tele-copy h1 {
+
+    max-width: 710px;
+
+    margin-top: 12px;
+
+    font-size:
+        clamp(
+            42px,
+            5vw,
+            66px
+        );
+
+    line-height:
+        1.04;
+
+    font-weight: 500;
+
+    letter-spacing:
+        -0.05em;
+
+}
+
+
+.tele-copy h1 span {
+
+    display: block;
+
+    color:
+        var(--tele-green);
+
+}
+
+
+.tele-lead {
+
+    max-width: 620px;
+
+    margin-top: 21px;
+
+    color:
+        var(--tele-text);
+
+    opacity: 0.88;
+
+    font-size: 14px;
+
+    line-height: 1.75;
+
+}
+
+
+.tele-sub {
+
+    max-width: 600px;
+
+    margin-top: 9px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+}
+
+
+.dr-inline-link {
+
+    color:
+        var(--tele-green);
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+}
+
+
+.dr-inline-link:hover {
+
+    text-decoration:
+        underline;
+
+}
+
+
+
+/* =========================================================
+   AÇÕES
+========================================================= */
+
+.tele-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 11px;
+
+    margin-top: 25px;
+
+}
+
+
+.tele-main-button,
+.tele-secondary-button {
+
+    min-height: 48px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        0 21px;
+
+}
+
+
+.score-actions {
+
+    display: none;
+
+}
+
+
+
+/* =========================================================
+   CARD TELEMEDICINA
+========================================================= */
+
+.tele-demo {
+
+    position: relative;
+
+}
+
+
+.tele-demo::before {
+
+    content: "";
+
+    position: absolute;
+
+    z-index: 0;
+
+    width: 370px;
+    height: 370px;
+
+    top: -80px;
+    right: -60px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(66, 214, 157, 0.09);
+
+    filter:
+        blur(100px);
+
+    pointer-events: none;
+
+}
+
+
+.tele-window {
+
+    position: relative;
+
+    z-index: 2;
+
+    padding: 15px;
+
+    border:
+        1px solid
+        var(--tele-border);
+
+    border-radius: 27px;
+
+    background:
+        rgba(10, 25, 18, 0.76);
+
+    box-shadow:
+        0 25px 65px
+        rgba(0, 0, 0, 0.24);
+
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
+
+}
+
+
+.tele-window-top {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding:
+        6px 5px 13px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 9px;
+
+}
+
+
+.tele-window-top div {
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+
+.online-dot {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background:
+        var(--tele-green);
+
+    box-shadow:
+        0 0 10px
+        rgba(66, 214, 157, 0.6);
+
+}
+
+
+.tele-video {
+
+    position: relative;
+
+    min-height: 315px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background:
+
+        radial-gradient(
+            circle at 50% 32%,
+            rgba(66, 214, 157, 0.17),
+            transparent 36%
+        ),
+
+        linear-gradient(
+            145deg,
+            #0b2017,
+            #06120d
+        );
+
+}
+
+
+.doctor-circle {
+
+    width: 128px;
+    height: 128px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(66, 214, 157, 0.19);
+
+    border-radius: 50%;
+
+    color:
+        var(--tele-green);
+
+    background:
+        rgba(66, 214, 157, 0.07);
+
+}
+
+
+.doctor-circle svg {
+
+    width: 61px;
+
+}
+
+
+.tele-video-info {
+
+    display: flex;
+
+    align-items: center;
+
+    flex-direction: column;
+
+    margin-top: 17px;
+
+}
+
+
+.tele-video-info strong {
+
+    color:
+        var(--tele-text);
+
+    font-size: 13px;
+
+}
+
+
+.tele-video-info span {
+
+    margin-top: 3px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 9px;
+
+}
+
+
+.tele-controls {
+
+    position: absolute;
+
+    bottom: 16px;
+
+    display: flex;
+
+    gap: 8px;
+
+}
+
+
+.tele-controls button {
+
+    width: 39px;
+    height: 39px;
+
+    display: grid;
+    place-items: center;
+
+    padding: 0;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 50%;
+
+    color:
+        var(--tele-text);
+
+    background:
+        rgba(4, 14, 10, 0.76);
+
+}
+
+
+.tele-controls button svg {
+
+    width: 16px;
+
+}
+
+
+.tele-controls
+.tele-end {
+
+    color: #ffffff;
+
+    background:
+        #b84f4f;
+
+}
+
+
+.tele-provider {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding:
+        16px 5px 3px;
+
+}
+
+
+.provider-symbol {
+
+    width: 41px;
+    height: 41px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 13px;
+
+    color:
+        var(--tele-green);
+
+    background:
+        rgba(66, 214, 157, 0.10);
+
+}
+
+
+.provider-symbol svg {
+
+    width: 19px;
+
+}
+
+
+.tele-provider > div:last-child {
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.tele-provider span {
+
+    color:
+        var(--tele-green);
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+    letter-spacing:
+        0.10em;
+
+}
+
+
+.tele-provider strong {
+
+    margin-top: 2px;
+
+    color:
+        var(--tele-text);
+
+    font-size: 12px;
+
+}
+
+
+.tele-provider p {
+
+    margin-top: 3px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 9px;
+
+}
+
+
+
+/* =========================================================
+   SCORE ORIGIN
+========================================================= */
+
+.score-origin-section {
+
+    display: none;
+
+    min-height: auto !important;
+
+    padding:
+        8px 0 48px !important;
+
+}
+
+
+.score-origin-section.visible {
+
+    display: block;
+
+}
+
+
+.score-origin-card {
+
+    padding: 27px;
+
+    border:
+        1px solid
+        rgba(66, 214, 157, 0.20);
+
+    border-radius: 24px;
+
+    background:
+        rgba(66, 214, 157, 0.035);
+
+}
+
+
+.score-origin-head {
+
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 25px;
+
+}
+
+
+.score-origin-head h2 {
+
+    margin-top: 6px;
+
+    font-size: 26px;
+
+}
+
+
+.score-origin-head p {
+
+    margin-top: 5px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 11px;
+
+}
+
+
+.score-origin-head a {
+
+    color:
+        var(--tele-green);
+
+    font-size: 10px;
+
+}
+
+
+.score-origin-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-top: 23px;
+
+}
+
+
+.score-origin-item {
+
+    min-height: 110px;
+
+    display: flex;
+    justify-content: center;
+
+    flex-direction: column;
+
+    padding: 17px;
+
+    border:
+        1px solid
+        var(--tele-border);
+
+    border-radius: 17px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+}
+
+
+.score-origin-item.highlight {
+
+    border-color:
+        rgba(66, 214, 157, 0.23);
+
+    background:
+        rgba(66, 214, 157, 0.05);
+
+}
+
+
+.score-origin-item span {
+
+    color:
+        var(--tele-muted);
+
+    font-size: 9px;
+
+}
+
+
+.score-origin-item strong {
+
+    margin-top: 4px;
+
+    color:
+        var(--tele-text);
+
+    font-size: 29px;
+
+    font-weight: 500;
+
+}
+
+
+.score-origin-item
+.text-score {
+
+    font-size: 19px;
+
+}
+
+
+.score-origin-item small {
+
+    margin-top: 3px;
+
+    color:
+        var(--tele-muted);
+
+}
+
+
+.score-origin-explanation {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 13px;
+
+    margin-top: 12px;
+
+    padding: 15px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.06);
+
+    border-radius: 16px;
+
+    background:
+        rgba(255, 255, 255, 0.02);
+
+}
+
+
+.score-info-icon {
+
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    color:
+        var(--tele-green);
+
+    background:
+        rgba(66, 214, 157, 0.10);
+
+}
+
+
+.score-origin-explanation strong {
+
+    color:
+        var(--tele-text);
+
+    font-size: 11px;
+
+}
+
+
+.score-origin-explanation p {
+
+    margin-top: 4px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 10px;
+
+    line-height: 1.65;
+
+}
+
+
+.score-dr-action {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+
+    margin-top: 12px;
+
+    padding: 18px;
+
+    border-radius: 17px;
+
+    background:
+        rgba(66, 214, 157, 0.045);
+
+}
+
+
+.score-dr-action h3 {
+
+    margin-top: 4px;
+
+    font-size: 15px;
+
+}
+
+
+.score-dr-action p {
+
+    margin-top: 3px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 9px;
+
+}
+
+
+.score-dr-action .btn-explore {
+
+    flex-shrink: 0;
+
+}
+
+
+
+/* =========================================================
+   CENTRALIZA EYEBROW
+========================================================= */
+
+.tele-center-eyebrow {
+
+    display: flex;
+
+    justify-content: center;
+
+}
+
+
+
+/* =========================================================
+   JORNADA
+========================================================= */
+
+.tele-journey-section {
+
+    min-height: auto !important;
+
+    padding-top:
+        52px !important;
+
+    padding-bottom:
+        52px !important;
+
+}
+
+
+.tele-journey-section
+.sec-head {
+
+    margin-bottom: 23px;
+
+}
+
+
+.tele-steps {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        1fr
+        auto
+        1fr
+        auto
+        1fr;
+
+    gap: 10px;
+
+    align-items: center;
+
+    margin-top: 26px;
+
+}
+
+
+.tele-step {
+
+    min-height: 205px;
+
+    padding: 19px;
+
+    border:
+        1px solid
+        var(--tele-border);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+}
+
+
+.tele-step-number {
+
+    color:
+        var(--tele-muted);
+
+    font-size: 9px;
+
+}
+
+
+.tele-step-icon {
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    margin-top: 18px;
+
+    border-radius: 13px;
+
+    color:
+        var(--tele-green);
+
+    background:
+        rgba(66, 214, 157, 0.09);
+
+}
+
+
+.tele-step-icon svg {
+
+    width: 20px;
+
+}
+
+
+.tele-step h3 {
+
+    margin-top: 14px;
+
+    color:
+        var(--tele-text);
+
+    font-size: 14px;
+
+}
+
+
+.tele-step p {
+
+    margin-top: 6px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 10px;
+
+    line-height: 1.65;
+
+}
+
+
+.step-arrow {
+
+    color:
+        var(--tele-green);
+
+    font-size: 20px;
+
+    opacity: 0.55;
+
+}
+
+
+
+/* =========================================================
+   DAIJI + DR ONLINE
+========================================================= */
+
+.tele-connection-section {
+
+    min-height: auto !important;
+
+    padding-top:
+        52px !important;
+
+    padding-bottom:
+        52px !important;
+
+}
+
+
+.daiji-dr-card {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        160px
+        1fr;
+
+    align-items: stretch;
+
+    padding: 22px;
+
+    margin-top: 25px;
+
+    border:
+        1px solid
+        var(--tele-border);
+
+    border-radius: 25px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+}
+
+
+.journey-side {
+
+    padding: 21px;
+
+}
+
+
+.journey-brand {
+
+    color:
+        var(--tele-text);
+
+    font-size: 20px;
+
+    font-weight: 600;
+
+    letter-spacing:
+        0.08em;
+
+}
+
+
+.journey-brand span {
+
+    color:
+        var(--tele-green);
+
+}
+
+
+.dr-brand {
+
+    display: inline-flex;
+
+    color:
+        var(--tele-green);
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+}
+
+
+.dr-brand:hover {
+
+    text-decoration:
+        underline;
+
+}
+
+
+.journey-side small {
+
+    display: block;
+
+    margin-top: 17px;
+
+    color:
+        var(--tele-green);
+
+    font-size: 8px;
+
+    letter-spacing:
+        0.10em;
+
+}
+
+
+.journey-side h3 {
+
+    margin-top: 5px;
+
+    color:
+        var(--tele-text);
+
+    font-size: 21px;
+
+}
+
+
+.journey-side ul {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    margin-top: 16px;
+
+    padding: 0;
+
+    list-style: none;
+
+}
+
+
+.journey-side li {
+
+    color:
+        var(--tele-muted);
+
+    font-size: 10px;
+
+}
+
+
+.dr-small-link {
+
+    display: inline-flex;
+
+    margin-top: 18px;
+
+    color:
+        var(--tele-green);
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+}
+
+
+.journey-connector {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-direction: column;
+
+}
+
+
+.connector-line {
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    height: 1px;
+
+    background:
+        rgba(66, 214, 157, 0.20);
+
+}
+
+
+.connector-circle {
+
+    position: relative;
+
+    z-index: 2;
+
+    width: 42px;
+    height: 42px;
+
+    display: grid;
+    place-items: center;
+
+    border:
+        1px solid
+        rgba(66, 214, 157, 0.25);
+
+    border-radius: 50%;
+
+    color:
+        var(--tele-green);
+
+    background:
+        var(--tele-bg);
+
+}
+
+
+.journey-connector span {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 7px;
+
+    padding:
+        2px 7px;
+
+    color:
+        var(--tele-muted);
+
+    background:
+        var(--tele-bg);
+
+    font-size: 8px;
+
+}
+
+
+
+/* =========================================================
+   CTA DR.ONLINE
+========================================================= */
+
+.tele-dr-section {
+
+    min-height: auto !important;
+
+    padding-top:
+        44px !important;
+
+    padding-bottom:
+        44px !important;
+
+}
+
+
+.tele-final-card {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 32px;
+
+    min-height: 0 !important;
+
+    padding:
+        28px 35px;
+
+    margin: 0;
+
+    border:
+        1px solid
+        rgba(66, 214, 157, 0.22);
+
+    border-radius: 24px;
+
+    background:
+        rgba(66, 214, 157, 0.04);
+
+}
+
+
+.tele-final-card h2 {
+
+    margin-top: 6px;
+
+    color:
+        var(--tele-text);
+
+    font-size: 26px;
+
+}
+
+
+.tele-final-card p {
+
+    margin-top: 5px;
+
+    color:
+        var(--tele-muted);
+
+}
+
+
+.tele-dr-button {
+
+    flex-shrink: 0;
+
+    min-width: 205px;
+
+    text-align: center;
+
+}
+
+
+
+/* =========================================================
+   COMEÇAR DAIJI
+========================================================= */
+
+.tele-start-section {
+
+    min-height: auto !important;
+
+    padding-top:
+        44px !important;
+
+    padding-bottom:
+        44px !important;
+
+}
+
+
+.tele-start-card {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 32px;
+
+    min-height: 0 !important;
+
+    padding:
+        28px 35px;
+
+    border:
+        1px solid
+        var(--tele-border);
+
+    border-radius: 24px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+}
+
+
+.tele-start-card h2 {
+
+    max-width: 650px;
+
+    margin-top: 6px;
+
+    color:
+        var(--tele-text);
+
+    font-size: 26px;
+
+}
+
+
+.tele-start-card p {
+
+    max-width: 650px;
+
+    margin-top: 6px;
+
+    color:
+        var(--tele-muted);
+
+    font-size: 11px;
+
+    line-height: 1.65;
+
+}
+
+
+.tele-start-buttons {
+
+    min-width: 225px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+
+.tele-start-buttons a {
+
+    text-align: center;
+
+}
+
+
+
+/* =========================================================
+   DISCLAIMER
+========================================================= */
+
+.tele-disclaimer {
+
+    min-height: auto !important;
+
+    padding:
+        23px 0 40px !important;
+
+}
+
+
+.tele-disclaimer p {
+
+    max-width: 780px;
+
+    margin: auto;
+
+    color:
+        var(--tele-muted);
+
+    opacity: 0.70;
+
+    text-align: center;
+
+    font-size: 10px;
+
+    line-height: 1.7;
+
+}
+
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .tele-hero-grid {
+
+        grid-template-columns:
+            1fr;
+
+        gap: 38px;
+
+    }
+
+
+    .tele-demo {
+
+        width: 100%;
+
+        max-width: 620px;
+
+    }
+
+
+    .tele-steps {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap: 13px;
+
+    }
+
+
+    .step-arrow {
+
+        display: none;
+
+    }
+
+
+    .daiji-dr-card {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .journey-connector {
+
+        min-height: 70px;
+
+    }
+
+
+    .connector-line {
+
+        top: 50%;
+
+    }
+
+
+    .connector-circle {
+
+        transform:
+            rotate(90deg);
+
+    }
+
+}
+
+
+
+/* =========================================================
+   MOBILE GRANDE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .score-origin-head {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .score-origin-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .score-dr-action {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .score-dr-action
+    .btn-explore {
+
+        width: 100%;
+
+        text-align: center;
+
+    }
+
+
+    .tele-final-card,
+    .tele-start-card {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .tele-dr-button,
+    .tele-start-buttons {
+
+        width: 100%;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .tele-hero {
+
+        padding:
+            40px 0 40px;
+
+    }
+
+
+    .tele-copy h1 {
+
+        font-size: 38px;
+
+    }
+
+
+    .tele-lead {
+
+        font-size: 13px;
+
+    }
+
+
+    .tele-actions {
+
+        flex-direction:
+            column;
+
+    }
+
+
+    .tele-main-button,
+    .tele-secondary-button {
+
+        width: 100%;
+
+        text-align: center;
+
+    }
+
+
+    .tele-video {
+
+        min-height: 280px;
+
+    }
+
+
+    .doctor-circle {
+
+        width: 108px;
+        height: 108px;
+
+    }
+
+
+    .doctor-circle svg {
+
+        width: 51px;
+
+    }
+
+
+    .tele-page main > .sec {
+
+        padding-top:
+            39px !important;
+
+        padding-bottom:
+            39px !important;
+
+    }
+
+
+    .tele-journey-section,
+    .tele-connection-section,
+    .tele-dr-section,
+    .tele-start-section {
+
+        padding-top:
+            39px !important;
+
+        padding-bottom:
+            39px !important;
+
+    }
+
+
+    .tele-steps {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .tele-step {
+
+        min-height: auto;
+
+    }
+
+
+    .journey-side {
+
+        padding:
+            15px 4px;
+
+    }
+
+
+    .score-origin-card {
+
+        padding:
+            18px 15px;
+
+    }
+
+
+    .tele-final-card,
+    .tele-start-card {
+
+        padding:
+            22px 18px;
+
+    }
+
+
+    .tele-final-card h2,
+    .tele-start-card h2 {
+
+        font-size: 22px;
+
+    }
+
+
+    .tele-disclaimer {
+
+        padding:
+            20px 0 35px !important;
+
+    }
+
+}

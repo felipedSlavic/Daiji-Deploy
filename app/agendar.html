@@ -51,7 +51,6 @@
     <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
 
 
-    <script src="js/session.js" data-private></script>
     <script src="js/theme.js"></script>
 
 
@@ -131,8 +130,8 @@
 
                 <div>
 
-                    <span class="eyebrow">
-                        Psicologia
+                    <span class="eyebrow" id="docEyebrow">
+                        Consulta
                     </span>
 
                     <h1>
@@ -151,13 +150,124 @@
 
 
         <!-- =================================================
+             ESCOLHA: ESPECIALIDADE OU MÉDICO
+        ================================================== -->
+
+        <section class="glass-card picker-card" id="picker">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-kicker">
+                        Profissional
+                    </span>
+
+                    <h3>
+                        Com quem você quer se consultar?
+                    </h3>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="picker-close"
+                    id="pickerClose"
+                    hidden
+                >
+                    Cancelar
+                </button>
+
+            </div>
+
+
+            <div
+                class="picker-tabs"
+                id="pickerTabs"
+                role="tablist"
+            >
+
+                <button
+                    type="button"
+                    class="picker-tab"
+                    role="tab"
+                    data-tab="especialidade"
+                    aria-selected="true"
+                >
+                    <i class="bi bi-grid"></i>
+                    Por especialidade
+                </button>
+
+                <button
+                    type="button"
+                    class="picker-tab"
+                    role="tab"
+                    data-tab="medico"
+                    aria-selected="false"
+                >
+                    <i class="bi bi-person-badge"></i>
+                    Por médico
+                </button>
+
+            </div>
+
+
+            <!-- ABA: ESPECIALIDADE -->
+            <div class="picker-pane" id="paneEspecialidade">
+
+                <p class="picker-step">
+                    <span>1</span>
+                    Escolha a especialidade
+                </p>
+
+                <div class="spec-grid" id="specGrid"></div>
+
+                <div id="specDoctorsWrap" hidden>
+
+                    <p class="picker-step">
+                        <span>2</span>
+                        Escolha o médico
+                    </p>
+
+                    <div class="picker-list" id="specDoctors"></div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ABA: MÉDICO -->
+            <div class="picker-pane" id="paneMedico" hidden>
+
+                <label class="picker-search">
+
+                    <i class="bi bi-search"></i>
+
+                    <input
+                        type="search"
+                        id="doctorSearch"
+                        placeholder="Buscar pelo nome, especialidade ou CRM"
+                        aria-label="Buscar médico"
+                    >
+
+                </label>
+
+                <div class="picker-list" id="allDoctors"></div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
              PROFISSIONAL
         ================================================== -->
 
-        <section class="doctor-card">
+        <section class="doctor-card" id="doctorCard" hidden>
 
 
-            <div class="doctor-avatar">
+            <div class="doctor-avatar" id="docAvatar">
 
                 <i class="bi bi-person-fill"></i>
 
@@ -171,11 +281,11 @@
 
                     <div>
 
-                        <h2>
-                            Dra. Juliana Martins
+                        <h2 id="docNome">
+                            —
                         </h2>
 
-                        <p>
+                        <p id="docEspecialidade">
                             Psicóloga Clínica · CRP 06/123456
                         </p>
 
@@ -201,9 +311,9 @@
 
                         <i class="bi bi-star-fill star"></i>
 
-                        <strong>4.9</strong>
+                        <strong id="docNota">4.9</strong>
 
-                        128 avaliações
+                        <span id="docAvaliacoes">128 avaliações</span>
 
                     </span>
 
@@ -212,9 +322,22 @@
 
                         <i class="bi bi-clock"></i>
 
-                        50 min
+                        <span id="docDuracao">50 min</span>
 
                     </span>
+
+
+                    <button
+                        type="button"
+                        class="change-doctor"
+                        id="changeDoctor"
+                    >
+
+                        <i class="bi bi-arrow-repeat"></i>
+
+                        Trocar profissional
+
+                    </button>
 
 
                 </div>
@@ -238,7 +361,7 @@
                  COLUNA PRINCIPAL
             ================================================== -->
 
-            <div class="main-column">
+            <div class="main-column" id="scheduleColumn">
 
 
                 <!-- DIA -->
@@ -455,7 +578,7 @@
                                 </strong>
 
                                 <small>
-                                    Sessão online · 50 min
+                                    Sessão online · <span class="js-duracao">50 min</span>
                                 </small>
 
                             </span>
@@ -489,7 +612,7 @@
                                 </strong>
 
                                 <small>
-                                    Consultório · 50 min
+                                    Consultório · <span class="js-duracao">50 min</span>
                                 </small>
 
                             </span>
@@ -519,6 +642,33 @@
                             Resumo do agendamento
 
                         </span>
+
+                    </div>
+
+
+
+                    <div class="summary-row">
+
+
+                        <span class="summary-icon">
+
+                            <i class="bi bi-person"></i>
+
+                        </span>
+
+
+                        <div class="summary-copy">
+
+                            <small>
+                                Profissional
+                            </small>
+
+                            <strong id="sumProfissional">
+                                Escolha acima
+                            </strong>
+
+                        </div>
+
 
                     </div>
 
@@ -594,8 +744,8 @@
                                 Duração
                             </small>
 
-                            <strong>
-                                50 minutos
+                            <strong id="sumDuracao">
+                                —
                             </strong>
 
                         </div>
@@ -614,7 +764,7 @@
                         disabled
                     >
 
-                        Confirmar agendamento
+                        <span id="ctaLabel">Escolha um profissional</span>
 
                         <i class="bi bi-arrow-right"></i>
 
@@ -683,8 +833,8 @@
                         Profissional
                     </span>
 
-                    <strong>
-                        Dra. Juliana Martins
+                    <strong id="recapProfissional">
+                        —
                     </strong>
 
                 </div>
@@ -754,6 +904,7 @@
 
 
 
+    <script src="js/medicos.js"></script>
     <script src="js/agendar.js"></script>
 
 

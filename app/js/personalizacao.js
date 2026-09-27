@@ -1,5 +1,3 @@
-(function () {
-    if (!DaijiSession.validar()) return
 const formularioPersonalizacao =
     document.querySelector('#personalizacaoForm')
 
@@ -18,7 +16,31 @@ formularioPersonalizacao.addEventListener('submit', function (event) {
     }
 
 
+    try {
+
+        const diabetes =
+            formularioPersonalizacao.querySelector(
+                'input[name="diabetes"]:checked'
+            )
+
+        localStorage.setItem(
+            'daiji_diabetes',
+            diabetes ?
+                diabetes.value :
+                'nao'
+        )
+
+    }
+
+    catch (error) {
+
+        console.log(
+            'Não foi possível salvar a preferência de diabetes'
+        )
+
+    }
+
+
     window.location.href = 'score.html'
 
 })
-})()

@@ -51,9 +51,6 @@
     <!-- Tema (Escuro / Claro) — aplicado cedo p/ evitar flash -->
 
 
-    <script src="js/session.js" data-private></script>
-    <script src="js/api-config.js"></script>
-    <script src="js/http.js"></script>
     <script src="js/theme.js"></script>
 
 
@@ -211,7 +208,6 @@
                     <circle
                         class="gauge-progress"
                         id="scoreArc"
-                        style="visibility: hidden"
                         cx="75"
                         cy="75"
                         r="60"
@@ -223,7 +219,7 @@
                 <div class="gauge-value">
 
                     <strong id="scoreValue">
-                        —
+                        74
                     </strong>
 
                     <span>
@@ -246,7 +242,7 @@
 
 
                 <h2>
-                    Carregando score...
+                    Risco Moderado
                 </h2>
 
 
@@ -271,7 +267,7 @@
 
                     <i class="bi bi-clock"></i>
 
-                    <span id="scoreUpdate" role="status">Consultando seu score.</span>
+                    Atualizado hoje às 08:30
 
                 </div>
 
@@ -973,7 +969,10 @@
 
                     <div>
 
-                        <span class="section-kicker">
+                        <span
+                            class="section-kicker"
+                            id="ciPtsKicker"
+                        >
                             +50 pontos
                         </span>
 
@@ -1085,25 +1084,136 @@
                         </span>
 
                         <strong>
-                            Que horas você dormiu?
+                            Quanto tempo você dormiu?
                         </strong>
 
                     </div>
 
 
-                    <div class="time-field">
+                    <!-- escolha do modo de preenchimento -->
+                    <div
+                        class="sleep-mode"
+                        id="sleepMode"
+                        role="group"
+                        aria-label="Como prefere informar o sono"
+                    >
 
-                        <span>
-                            Horário
-                        </span>
-
-                        <input
-                            type="time"
-                            id="horaInput"
-                            value="22:30"
+                        <button
+                            type="button"
+                            class="sleep-mode-btn"
+                            data-mode="horas"
+                            aria-pressed="true"
                         >
+                            <i class="bi bi-hourglass-split"></i>
+                            Total de horas
+                        </button>
+
+                        <button
+                            type="button"
+                            class="sleep-mode-btn"
+                            data-mode="intervalo"
+                            aria-pressed="false"
+                        >
+                            <i class="bi bi-arrow-left-right"></i>
+                            Dormi / acordei
+                        </button>
 
                     </div>
+
+
+                    <!-- MODO: TOTAL DE HORAS -->
+                    <div
+                        class="sleep-panel"
+                        id="sleepPanelHoras"
+                    >
+
+                        <div class="sleep-stepper">
+
+                            <button
+                                type="button"
+                                class="stepper-btn"
+                                id="sleepMenos"
+                                aria-label="Diminuir 30 minutos"
+                            >
+                                <i class="bi bi-dash-lg"></i>
+                            </button>
+
+                            <div class="stepper-value">
+
+                                <strong id="sleepHorasValor">7h 30min</strong>
+
+                                <small>de sono</small>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="stepper-btn"
+                                id="sleepMais"
+                                aria-label="Aumentar 30 minutos"
+                            >
+                                <i class="bi bi-plus-lg"></i>
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MODO: INTERVALO -->
+                    <div
+                        class="sleep-panel"
+                        id="sleepPanelIntervalo"
+                        hidden
+                    >
+
+                        <div class="sleep-range">
+
+                            <label class="time-field">
+
+                                <span>
+                                    <i class="bi bi-moon"></i>
+                                    Fui dormir
+                                </span>
+
+                                <input
+                                    type="time"
+                                    id="dormiuInput"
+                                    value="23:00"
+                                >
+
+                            </label>
+
+
+                            <label class="time-field">
+
+                                <span>
+                                    <i class="bi bi-sunrise"></i>
+                                    Acordei
+                                </span>
+
+                                <input
+                                    type="time"
+                                    id="acordouInput"
+                                    value="06:30"
+                                >
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- resultado calculado -->
+                    <p
+                        class="sleep-result"
+                        id="sleepResult"
+                        aria-live="polite"
+                    >
+                        <i class="bi bi-check2-circle"></i>
+                        <span id="sleepResultText">7h 30min de sono · dentro do recomendado</span>
+                    </p>
 
 
                 </div>
@@ -1256,6 +1366,266 @@
 
 
 
+                <!-- PASSOS -->
+
+                <div class="question">
+
+
+                    <div class="question-title">
+
+                        <span>
+
+                            <i class="bi bi-shoe-prints"></i>
+
+                        </span>
+
+                        <strong>
+                            Quantos passos você deu até agora?
+                        </strong>
+
+                    </div>
+
+
+                    <div class="number-field">
+
+                        <span>
+                            Passos
+                        </span>
+
+                        <input
+                            type="number"
+                            id="passosInput"
+                            min="0"
+                            step="100"
+                            inputmode="numeric"
+                            placeholder="Ex: 4500"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- ÁGUA -->
+
+                <div class="question">
+
+
+                    <div class="question-title">
+
+                        <span>
+
+                            <i class="bi bi-droplet"></i>
+
+                        </span>
+
+                        <strong>
+                            Quantos copos de água você tomou até agora?
+                        </strong>
+
+                    </div>
+
+
+                    <div class="number-field">
+
+                        <span>
+                            Copos (200ml)
+                        </span>
+
+                        <input
+                            type="number"
+                            id="aguaInput"
+                            min="0"
+                            step="1"
+                            inputmode="numeric"
+                            placeholder="Ex: 5"
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- PRESSÃO ARTERIAL (OPCIONAL) -->
+
+                <div class="question">
+
+
+                    <div class="question-title">
+
+                        <span>
+
+                            <i class="bi bi-heart-pulse"></i>
+
+                        </span>
+
+                        <strong>
+                            Quer registrar sua pressão arterial hoje?
+                        </strong>
+
+                    </div>
+
+
+                    <label class="optional-toggle">
+
+                        <input
+                            type="checkbox"
+                            id="paToggle"
+                        >
+
+                        <span>
+                            Sim, quero registrar (opcional)
+                        </span>
+
+                    </label>
+
+
+                    <div
+                        class="pa-fields"
+                        id="paFields"
+                        hidden
+                    >
+
+                        <div class="number-field">
+
+                            <span>
+                                Sistólica
+                            </span>
+
+                            <input
+                                type="number"
+                                id="paSisInput"
+                                min="0"
+                                step="1"
+                                inputmode="numeric"
+                                placeholder="Ex: 120"
+                            >
+
+                        </div>
+
+
+                        <div class="number-field">
+
+                            <span>
+                                Diastólica
+                            </span>
+
+                            <input
+                                type="number"
+                                id="paDiaInput"
+                                min="0"
+                                step="1"
+                                inputmode="numeric"
+                                placeholder="Ex: 80"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- GLICEMIA (SOMENTE PARA QUEM TEM DIABETES) -->
+
+                <div
+                    class="question"
+                    id="glicemiaQuestion"
+                    hidden
+                >
+
+
+                    <div class="question-title">
+
+                        <span>
+
+                            <i class="bi bi-clipboard2-pulse"></i>
+
+                        </span>
+
+                        <strong>
+                            Qual foi sua medição de glicemia hoje?
+                        </strong>
+
+                    </div>
+
+
+                    <div class="number-field">
+
+                        <span>
+                            Glicemia (mg/dL)
+                        </span>
+
+                        <input
+                            type="number"
+                            id="glicemiaInput"
+                            min="0"
+                            step="1"
+                            inputmode="numeric"
+                            placeholder="Ex: 110"
+                        >
+
+                    </div>
+
+
+                    <div
+                        class="options"
+                        data-group="medicaoGlicemia"
+                    >
+
+
+                        <button
+                            type="button"
+                            class="option"
+                            data-val="Medi nos horários certos"
+                        >
+
+                            <i></i>
+
+                            Medi nos horários certos
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="option"
+                            data-val="Medi só uma vez"
+                        >
+
+                            <i></i>
+
+                            Medi só uma vez
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="option"
+                            data-val="Não medi hoje"
+                        >
+
+                            <i></i>
+
+                            Não medi hoje
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+
                 <!-- MEDICAÇÃO -->
 
                 <div class="question">
@@ -1343,7 +1713,7 @@
 
                     Concluir Check-in
 
-                    <span>
+                    <span id="ciSubmitPts">
                         +50 pts
                     </span>
 
@@ -1403,7 +1773,9 @@
 
                 <i class="bi bi-star-fill"></i>
 
-                +50 pontos
+                <span id="ciSuccessPts">
+                    +50 pontos
+                </span>
 
             </div>
 

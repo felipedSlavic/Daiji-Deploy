@@ -252,7 +252,7 @@
 
         let resposta
         try {
-            resposta = await DaijiHttp.request(`/api/beneficiarios/${idBeneficiario}/score`)
+            resposta = await DaijiHttp.request(`/api/beneficiarios/${idBeneficiario}/score`, { cache: 'no-store' })
         } catch (erro) {
             mostrarEstado('Score indisponível', DaijiHttp.isTimeout(erro)
                 ? 'O servidor demorou para responder. Recarregue a página para tentar novamente.'
